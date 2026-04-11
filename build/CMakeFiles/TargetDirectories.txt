@@ -1,0 +1,4 @@
+/home/eric/Repositorios/Blazar/build/CMakeFiles/Blazar.dir
+/home/eric/Repositorios/Blazar/build/CMakeFiles/main.dir
+/home/eric/Repositorios/Blazar/build/CMakeFiles/edit_cache.dir
+/home/eric/Repositorios/Blazar/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/home/eric/Repositorios/Blazar/build",
+  "command": "/usr/bin/c++  -I/home/eric/Repositorios/Blazar/include -g -std=gnu++26 -o CMakeFiles/Blazar.dir/src/io.cpp.o -c /home/eric/Repositorios/Blazar/src/io.cpp",
+  "file": "/home/eric/Repositorios/Blazar/src/io.cpp",
+  "output": "CMakeFiles/Blazar.dir/src/io.cpp.o"
+},
+{
+  "directory": "/home/eric/Repositorios/Blazar/build",
+  "command": "/usr/bin/c++  -I/home/eric/Repositorios/Blazar/include -g -std=c++23 -o CMakeFiles/main.dir/main.cpp.o -c /home/eric/Repositorios/Blazar/main.cpp",
+  "file": "/home/eric/Repositorios/Blazar/main.cpp",
+  "output": "CMakeFiles/main.dir/main.cpp.o"
+}
+]
