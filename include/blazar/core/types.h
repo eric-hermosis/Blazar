@@ -1,6 +1,6 @@
 // Copyright 2026 Eric Hermosis
 //
-// This file is part of the Tannic Tensor Library.
+// This file is part of the Blazar Tensor Library.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,4 +38,18 @@ enum type {
     TYPES
 };  
 
+#ifdef __cplusplus 
+#include <cstdint>  
+using rank_type  = std::uint8_t; 
+using code_type  = std::uint16_t; 
+using size_type  = std::uint64_t ;
+using index_type = std::uint64_t ;
+#else
+#include <stdint.h>  
+typedef uint8_t rank_type;
+typedef int16_t code_type;
+typedef int64_t size_type;
+typedef int64_t index_type; 
+#endif 
+ 
 #endif // TYPES_H_0x45524943
