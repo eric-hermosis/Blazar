@@ -28,9 +28,8 @@ namespace {
  
 static constexpr struct {
     std::string_view name;
-    std::size_t      size;
-    std::uint16_t    code;
-    std::uint8_t     bits; 
+    std::size_t      size = 0; 
+    std::uint8_t     bits = 0; 
 }   
 
 traits[TYPES] = {
@@ -38,7 +37,7 @@ traits[TYPES] = {
     [boolean] = {
         .name = "boolean",
         .size = sizeof(std::uint8_t),
-        .bits = 1,
+        .bits = 8,
     },
 
     [uint8] = {
@@ -126,15 +125,11 @@ traits[TYPES] = {
     },
 
     [any] = {
-        .name = "any",
-        .size = 0,
-        .bits = 0,
+        .name = "any", 
     },
 
     [object] = {
-        .name = "object",
-        .size = 0,
-        .bits = 0,
+        .name = "object", 
     },
 };
 
