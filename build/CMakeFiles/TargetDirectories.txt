@@ -1,4 +1,10 @@
-/home/eric/Repositorios/Blazar/build/CMakeFiles/Blazar.dir
-/home/eric/Repositorios/Blazar/build/CMakeFiles/main.dir
-/home/eric/Repositorios/Blazar/build/CMakeFiles/edit_cache.dir
-/home/eric/Repositorios/Blazar/build/CMakeFiles/rebuild_cache.dir
+/home/eric/Blazar/build/CMakeFiles/Blazar.dir
+/home/eric/Blazar/build/CMakeFiles/main.dir
+/home/eric/Blazar/build/CMakeFiles/edit_cache.dir
+/home/eric/Blazar/build/CMakeFiles/rebuild_cache.dir
+/home/eric/Blazar/build/tests/CMakeFiles/test-operations.dir
+/home/eric/Blazar/build/tests/CMakeFiles/test-shape.dir
+/home/eric/Blazar/build/tests/CMakeFiles/test-strides.dir
+/home/eric/Blazar/build/tests/CMakeFiles/test-types.dir
+/home/eric/Blazar/build/tests/CMakeFiles/edit_cache.dir
+/home/eric/Blazar/build/tests/CMakeFiles/rebuild_cache.dir

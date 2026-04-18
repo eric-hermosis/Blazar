@@ -33,9 +33,11 @@ constexpr auto normalize(index_type index, size_type bound) -> index_type {
     if (index < 0) {
         index += bound;
     }
+
     if (index < 0 || index > bound) {
         throw Exception("Index out of bounds");
     }
+    
     return index;
 }  
  

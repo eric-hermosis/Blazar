@@ -21,6 +21,7 @@
 #include <cstdint>
 #include <cstddef>
 #include <string_view> 
+#include <complex>
 
 #include "core/types.h"
  
@@ -28,8 +29,8 @@ namespace {
  
 static constexpr struct {
     std::string_view name;
-    std::size_t      size = 0; 
-    std::uint8_t     bits = 0; 
+    std::size_t      size; 
+    std::uint8_t     bits; 
 }   
 
 traits[TYPES] = {
@@ -125,11 +126,15 @@ traits[TYPES] = {
     },
 
     [any] = {
-        .name = "any", 
+        .name = "any"
     },
 
     [object] = {
-        .name = "object", 
+        .name = "object" 
+    },
+
+    [unknown] = {
+        .name = "unknown" 
     },
 };
 
@@ -138,13 +143,21 @@ traits[TYPES] = {
 class Type {
     
 public:
-    constexpr explicit Type(type type) noexcept 
+    
+    constexpr Type() noexcept
+    :   type_(unknown) {}
+
+    constexpr Type(type type) noexcept 
     :   type_(type) {}
   
-    constexpr operator type() {
+    constexpr operator type() const {
         return type_;
     }
     
+    [[nodiscard]] constexpr auto id() const noexcept -> int {
+        return static_cast<int>(type_);
+    }
+
     [[nodiscard]] constexpr auto name() const noexcept ->  std::string_view  {
         return traits[type_].name;
     }
@@ -155,6 +168,25 @@ public:
 
     [[nodiscard]] constexpr auto bits() const noexcept -> std::uint8_t  {
         return traits[type_].bits;
+    }
+
+    template<typename T>
+    [[nodiscard]] static constexpr auto of(T) noexcept -> Type {  
+        if constexpr (std::is_same_v<T, bool>) return boolean;
+        else if constexpr (std::is_same_v<T, uint8_t>)  return uint8;
+        else if constexpr (std::is_same_v<T, uint16_t>) return uint16;
+        else if constexpr (std::is_same_v<T, uint32_t>) return uint32;
+        else if constexpr (std::is_same_v<T, uint64_t>) return uint64;
+        else if constexpr (std::is_same_v<T, int8_t>)   return int8;
+        else if constexpr (std::is_same_v<T, int16_t>)  return int16;
+        else if constexpr (std::is_same_v<T, int32_t>)  return int32;
+        else if constexpr (std::is_same_v<T, int64_t>)  return int64;
+        else if constexpr (std::is_same_v<T, float>)    return float32;
+        else if constexpr (std::is_same_v<T, double>)   return float64;
+        else if constexpr (std::is_same_v<T, std::complex<float>>)  return complex64;
+        else if constexpr (std::is_same_v<T, std::complex<double>>) return complex128;
+        else if constexpr (std::is_class_v<T>) return object; 
+        else return unknown;
     }
 
 private:

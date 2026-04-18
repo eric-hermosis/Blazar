@@ -1,0 +1,188 @@
+Start testing: Apr 18 21:44 UTC
+----------------------------------------------------------
+1/4 Testing: test-operations
+1/4 Test: test-operations
+Command: "/home/eric/Blazar/build/tests/test-operations"
+Directory: /home/eric/Blazar/build/tests
+"test-operations" start time: Apr 18 21:44 UTC
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 8 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 8 tests from OperationsTest
+[ RUN      ] OperationsTest.ConstexprUnaryShapePropagation
+[       OK ] OperationsTest.ConstexprUnaryShapePropagation (0 ms)
+[ RUN      ] OperationsTest.ConstexprBinarySameShape
+[       OK ] OperationsTest.ConstexprBinarySameShape (0 ms)
+[ RUN      ] OperationsTest.ConstexprBroadcastTrailing
+[       OK ] OperationsTest.ConstexprBroadcastTrailing (0 ms)
+[ RUN      ] OperationsTest.ConstexprBroadcastLeading
+[       OK ] OperationsTest.ConstexprBroadcastLeading (0 ms)
+[ RUN      ] OperationsTest.ConstexprBroadcastBothSides
+[       OK ] OperationsTest.ConstexprBroadcastBothSides (0 ms)
+[ RUN      ] OperationsTest.ConstexprBroadcastHigherRank
+[       OK ] OperationsTest.ConstexprBroadcastHigherRank (0 ms)
+[ RUN      ] OperationsTest.ConstexprBroadcastScalar
+[       OK ] OperationsTest.ConstexprBroadcastScalar (0 ms)
+[ RUN      ] OperationsTest.ConstexprBroadcastScalarScalar
+[       OK ] OperationsTest.ConstexprBroadcastScalarScalar (0 ms)
+[----------] 8 tests from OperationsTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 8 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 8 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-operations" end time: Apr 18 21:44 UTC
+"test-operations" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/4 Testing: test-shape
+2/4 Test: test-shape
+Command: "/home/eric/Blazar/build/tests/test-shape"
+Directory: /home/eric/Blazar/build/tests
+"test-shape" start time: Apr 18 21:44 UTC
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 16 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 16 tests from ShapeTest
+[ RUN      ] ShapeTest.ConstexprConstruction
+[       OK ] ShapeTest.ConstexprConstruction (0 ms)
+[ RUN      ] ShapeTest.ConstexprEquality
+[       OK ] ShapeTest.ConstexprEquality (0 ms)
+[ RUN      ] ShapeTest.ConstexprInitializerList
+[       OK ] ShapeTest.ConstexprInitializerList (0 ms)
+[ RUN      ] ShapeTest.IterableConstructor
+[       OK ] ShapeTest.IterableConstructor (0 ms)
+[ RUN      ] ShapeTest.IteratorConstructor
+[       OK ] ShapeTest.IteratorConstructor (0 ms)
+[ RUN      ] ShapeTest.NegativeIndexing
+[       OK ] ShapeTest.NegativeIndexing (0 ms)
+[ RUN      ] ShapeTest.Append
+[       OK ] ShapeTest.Append (0 ms)
+[ RUN      ] ShapeTest.Resize
+[       OK ] ShapeTest.Resize (0 ms)
+[ RUN      ] ShapeTest.FrontBack
+[       OK ] ShapeTest.FrontBack (0 ms)
+[ RUN      ] ShapeTest.Equality
+[       OK ] ShapeTest.Equality (0 ms)
+[ RUN      ] ShapeTest.AppendExceedsLimitThrows
+[       OK ] ShapeTest.AppendExceedsLimitThrows (0 ms)
+[ RUN      ] ShapeTest.InvalidNegativeDimensionThrows
+[       OK ] ShapeTest.InvalidNegativeDimensionThrows (0 ms)
+[ RUN      ] ShapeTest.AppendInvalidDimensionThrows
+[       OK ] ShapeTest.AppendInvalidDimensionThrows (0 ms)
+[ RUN      ] ShapeTest.DynamicDimensionAllowed
+[       OK ] ShapeTest.DynamicDimensionAllowed (0 ms)
+[ RUN      ] ShapeTest.AddressAccess
+[       OK ] ShapeTest.AddressAccess (0 ms)
+[ RUN      ] ShapeTest.Iteration
+[       OK ] ShapeTest.Iteration (0 ms)
+[----------] 16 tests from ShapeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 16 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 16 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-shape" end time: Apr 18 21:44 UTC
+"test-shape" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: test-strides
+3/4 Test: test-strides
+Command: "/home/eric/Blazar/build/tests/test-strides"
+Directory: /home/eric/Blazar/build/tests
+"test-strides" start time: Apr 18 21:44 UTC
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 15 tests from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 15 tests from StridesTest
+[ RUN      ] StridesTest.ConstexprConstruction
+[       OK ] StridesTest.ConstexprConstruction (0 ms)
+[ RUN      ] StridesTest.ConstexprEquality
+[       OK ] StridesTest.ConstexprEquality (0 ms)
+[ RUN      ] StridesTest.ConstexprInitializerList
+[       OK ] StridesTest.ConstexprInitializerList (0 ms)
+[ RUN      ] StridesTest.IteratorConstructor
+[       OK ] StridesTest.IteratorConstructor (0 ms)
+[ RUN      ] StridesTest.NegativeIndexing
+[       OK ] StridesTest.NegativeIndexing (0 ms)
+[ RUN      ] StridesTest.Append
+[       OK ] StridesTest.Append (0 ms)
+[ RUN      ] StridesTest.Resize
+[       OK ] StridesTest.Resize (0 ms)
+[ RUN      ] StridesTest.FrontBack
+[       OK ] StridesTest.FrontBack (0 ms)
+[ RUN      ] StridesTest.Equality
+[       OK ] StridesTest.Equality (0 ms)
+[ RUN      ] StridesTest.AppendExceedsLimitThrows
+[       OK ] StridesTest.AppendExceedsLimitThrows (0 ms)
+[ RUN      ] StridesTest.InvalidNegativeDimensionThrows
+[       OK ] StridesTest.InvalidNegativeDimensionThrows (0 ms)
+[ RUN      ] StridesTest.AppendInvalidDimensionThrows
+[       OK ] StridesTest.AppendInvalidDimensionThrows (0 ms)
+[ RUN      ] StridesTest.DynamicDimensionAllowed
+[       OK ] StridesTest.DynamicDimensionAllowed (0 ms)
+[ RUN      ] StridesTest.AddressAccess
+[       OK ] StridesTest.AddressAccess (0 ms)
+[ RUN      ] StridesTest.Iteration
+[       OK ] StridesTest.Iteration (0 ms)
+[----------] 15 tests from StridesTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 15 tests from 1 test suite ran. (0 ms total)
+[  PASSED  ] 15 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-strides" end time: Apr 18 21:44 UTC
+"test-strides" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: test-types
+4/4 Test: test-types
+Command: "/home/eric/Blazar/build/tests/test-types"
+Directory: /home/eric/Blazar/build/tests
+"test-types" start time: Apr 18 21:44 UTC
+Output:
+----------------------------------------------------------
+Running main() from ./googletest/src/gtest_main.cc
+[==========] Running 4 tests from 2 test suites.
+[----------] Global test environment set-up.
+[----------] 3 tests from TestTypes
+[ RUN      ] TestTypes.SizeofValuesAreCorrect
+[       OK ] TestTypes.SizeofValuesAreCorrect (0 ms)
+[ RUN      ] TestTypes.NameofValuesAreCorrect
+[       OK ] TestTypes.NameofValuesAreCorrect (0 ms)
+[ RUN      ] TestTypes.TypeOfFunction
+[       OK ] TestTypes.TypeOfFunction (0 ms)
+[----------] 3 tests from TestTypes (0 ms total)
+
+[----------] 1 test from DTypeTest
+[ RUN      ] DTypeTest.OstreamOperatorPrintsCorrectly
+[       OK ] DTypeTest.OstreamOperatorPrintsCorrectly (0 ms)
+[----------] 1 test from DTypeTest (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 4 tests from 2 test suites ran. (0 ms total)
+[  PASSED  ] 4 tests.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-types" end time: Apr 18 21:44 UTC
+"test-types" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Apr 18 21:44 UTC

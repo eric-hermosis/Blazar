@@ -1,4 +1,4 @@
-// Copyright 2025 Eric Hermosis
+// Copyright 2026 Eric Hermosis
 //
 // This file is part of the Blazar Tensor Library.
 //
@@ -17,7 +17,7 @@
 
 #ifndef SHAPE_HPP_0x45524943 
 #define SHAPE_HPP_0x45524943 
- 
+
 #include <iosfwd>
 #include <array>
 #include <cstdint>
@@ -37,68 +37,113 @@ public:
     constexpr Shape() noexcept = default;
 
     template<Integral Size>
-    constexpr Shape(std::initializer_list<Size> shape) {
-        if(shape.size() > limit) {
+    constexpr Shape(std::initializer_list<Size> shape)
+    {
+        const auto dimensions = shape.size();
+
+        if (dimensions > limit) {
             throw Exception(
-                "Shape rank " + std::to_string(size_) + 
+                "Shape rank " + std::to_string(dimensions) +
                 " exceeds limit of " + std::to_string(limit)
             );
         }
 
-        size_ = static_cast<uint8_t>(shape.size()); 
-        size_type dimension = 0;
-        for (auto size : shape) {
-            if(size < -1) {
-                throw Exception(
-                    "Invalid size for dimension " + std::to_string(dimension) + 
-                    ": " + std::to_string(size) + 
-                    ". Size must be >= -1."
-                );
-            }
-            sizes_.at(dimension++) = static_cast<size_type>(size);
-        }  
-    } 
+        size_ = static_cast<rank_type>(dimensions);
 
-    template<Integral... Sizes>
-    constexpr Shape(Sizes... sizes) 
-    :   sizes_{static_cast<size_type>(sizes)...}
-    ,   size_(sizeof...(sizes)) {      
-        if (size_> limit) {
-            throw Exception(std::string_view(
-                "Shape rank " + std::to_string(size_) + 
-                " exceeds limit of " + std::to_string(limit)
-            ).data());
+        size_type dimension = 0;
+
+        for (auto size : shape) {
+            if constexpr (std::is_signed_v<Size>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
+            }
+
+            sizes_[dimension++] = static_cast<size_type>(size);
         }
     }
 
+    template<Integral... Sizes>
+    constexpr Shape(Sizes... sizes)
+    :   size_(sizeof...(Sizes)) 
+    {
+        static_assert(sizeof...(Sizes) <= limit, "Shape rank exceeds limit.");
+        size_type dimension = 0;
+        (([&] {
+            if constexpr (std::is_signed_v<Sizes>) {
+                if (sizes < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(sizes) +
+                        ". Size must be >= -1."
+                    );
+                }
+            }
+
+            sizes_[dimension++] = static_cast<size_type>(sizes);
+        }()), ...);
+    }
+    
     template<Iterable Sizes>
     constexpr Shape(Sizes&& sizes) {
         size_type dimension = 0;
-        for (auto size : std::forward(sizes)) {
-            sizes_.at(dimension++) = static_cast<size_type>(size);
+
+        for (auto size : sizes) {
+            if (dimension >= limit) {
+                throw Exception(
+                    "Shape rank exceeds limit of " + std::to_string(limit)
+                );
+            }
+
+            if constexpr (std::is_signed_v<std::decay_t<decltype(size)>>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
+            }
+
+            sizes_[dimension++] = static_cast<size_type>(size);
         }
-        size_ = dimension;         
-        if (size_> limit) {
-            throw Exception(
-                "Shape rank " + std::to_string(size_) + 
-                " exceeds limit of " + std::to_string(limit)
-            ); 
-        }  
-    } 
+
+        size_ = dimension;
+    }
+
 
     template<Iterator Iterator>
-    constexpr Shape(Iterator begin, Iterator end) {
+    constexpr Shape(Iterator begin, Iterator end)
+    {
         size_type dimension = 0;
-        for (Iterator iterator = begin; iterator != end; ++iterator) { 
-            sizes_.at(dimension++) = static_cast<size_type>(*iterator);
+
+        for (Iterator iterator = begin; iterator != end; ++iterator) {
+            if (dimension >= limit) {
+                throw Exception(
+                    "Shape rank exceeds limit of " + std::to_string(limit)
+                );
+            }
+
+            auto size = *iterator;
+
+            if constexpr (std::is_signed_v<std::decay_t<decltype(size)>>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
+            }
+
+            sizes_[dimension++] = static_cast<size_type>(size);
         }
-        size_ = dimension;          
-        if (size_> limit) {
-            throw Exception(
-                "Shape rank " + std::to_string(size_) + 
-                " exceeds limit of " + std::to_string(limit)
-            );
-        }
+
+        size_ = dimension;
     }
 
     [[nodiscard]] constexpr auto address() noexcept -> size_type* {
@@ -137,7 +182,10 @@ public:
         return std::next(sizes_.cbegin(), size_); 
     }
     
-    [[nodiscard]] constexpr auto front() const noexcept { 
+    [[nodiscard]] constexpr auto front() const { 
+        if (size_ == 0) {
+            throw Exception("Cannot call front() on an empty Shape");
+        }
         return sizes_.front(); 
     }
     
@@ -145,43 +193,55 @@ public:
         if (size_ == 0) {
             throw Exception("Cannot call back() on an empty Shape");  
         }
-        return sizes_.at(size_ - 1);
+        return sizes_[size_-1];
     }       
 
     template<Integral Index>
     [[nodiscard]] constexpr auto operator[](Index index) const -> size_type const&{ 
-        return sizes_.at(indexing::normalize(index, size())); 
+        return sizes_[indexing::normalize(index, size())]; 
     }
     
     template<Integral Index>
     constexpr auto operator[](Index index) -> size_type& {
-        return sizes_.at(indexing::normalize(index, size())); 
+        return sizes_[indexing::normalize(index, size())]; 
     } 
 
     constexpr void append(size_type size) { 
         if (size_ + 1 > limit) {
-            throw Exception(std::string_view(
+            throw Exception(
                 "Shape dimensions " + std::to_string(size_) + 
-                " exceeds limit of " + std::to_string(limit))
-            .data());
+                " exceeds limit of " + std::to_string(limit)
+            );
         }  
-        sizes_.at(size_) = size;
-        size_ += 1; 
+
+        if (size < -1) {
+            throw Exception(
+                "Invalid size for dimension " + std::to_string(size_) +
+                ": " + std::to_string(size) +
+                ". Size must be >= -1."
+            );
+        }
+
+        sizes_[size_++] = size;
     }
 
     constexpr void resize(rank_type dimensions) {
-        if (size_ > limit) {
-            throw Exception(std::string_view(
+        if (dimensions > limit) {
+            throw Exception(
                 "Shape dimensions limit exceeded: rank is " + std::to_string(size_) +
                 ", but the maximum allowed is " + std::to_string(limit)
-            ).data());
+            );
         }
-        size_ = dimensions;
+
+        if (dimensions > size_) {
+            std::fill(sizes_.begin() + size_, sizes_.begin() + dimensions, 0);
+        }
+        size_ = dimensions; 
     }
 
 private:
     rank_type size_{0};      
-    std::array<size_type, limit> sizes_{1}; 
+    std::array<size_type, limit> sizes_{}; 
 };
  
 constexpr auto operator==(Shape const& first, Shape const& second) -> bool {
@@ -199,6 +259,6 @@ constexpr auto operator==(Shape const& first, Shape const& second) -> bool {
 
 auto operator<<(std::ostream&, Shape const& shape) -> std::ostream&;
 
-} // namespace blazar
+} 
 
-#endif // SHAPE_HPP_0x45524943 
+#endif

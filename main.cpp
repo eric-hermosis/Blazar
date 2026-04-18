@@ -1,21 +1,13 @@
-#include <array>
-#include <cstddef>
+#include <type_traits>
+#include <tuple> 
+ 
 #include <cstdint>
+#include <cstddef>
 #include <iostream>
-#include <string_view>
-
-#include "include/blazar/types.hpp"
-#include "include/blazar/shape.hpp"
-#include "include/blazar/strides.hpp"
-
+#include <blazar/shape.hpp>
 using namespace blazar;
 
-int main() {
-    Type t1(boolean);
-    Type t2(float64);
-    Type t3(complex128);
-    Strides shape(1,2,3,4,6,7,8,9);
-    std::cout << "t1: " << t1.name() << " size=" << t1.size() << "\n"; 
+int main() { 
+    Shape shape(1,2,3,4,5); 
     std::cout << shape << std::endl;
-    return 0;
 }

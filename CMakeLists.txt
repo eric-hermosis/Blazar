@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.30)
+cmake_minimum_required (VERSION 3.28)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(Blazar)
 
@@ -11,7 +11,7 @@ add_library(Blazar STATIC ${SOURCES})
 target_include_directories(Blazar PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 set_target_properties(Blazar PROPERTIES
-    CXX_STANDARD 26
+    CXX_STANDARD 23
     CXX_STANDARD_REQUIRED ON 
 ) 
 

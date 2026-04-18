@@ -27,12 +27,12 @@ namespace blazar {
     
 class Exception : public std::exception {
 public: 
-    constexpr explicit Exception(const char* message, std::source_location location = std::source_location::current()) 
-        : message_(message)
-        , location_(location) {}    
+    explicit Exception(std::string message, std::source_location location = std::source_location::current()) 
+    :   message_(std::move(message))
+    ,   location_(std::move(location)) {}    
   
     [[nodiscard]] constexpr auto what() const noexcept -> const char* override { 
-        return message_.data(); 
+        return message_.c_str(); 
     }
   
     [[nodiscard]] constexpr auto where() const noexcept -> const std::source_location& {
@@ -40,7 +40,7 @@ public:
     }
     
 private:
-    std::string_view message_; 
+    std::string message_; 
     std::source_location location_;
 };
  

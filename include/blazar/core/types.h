@@ -35,15 +35,16 @@ enum type {
     complex128,  
     any,
     object,
+    unknown,
     TYPES
 };  
 
 #ifdef __cplusplus 
 #include <cstdint>  
 using rank_type  = std::uint8_t; 
-using code_type  = std::uint16_t; 
-using size_type  = std::uint64_t ;
-using index_type = std::uint64_t ;
+using code_type  = std::int16_t; 
+using size_type  = std::int64_t ;
+using index_type = std::int64_t ;
 #else
 #include <stdint.h>  
 typedef uint8_t rank_type;

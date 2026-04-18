@@ -1,0 +1,1 @@
+/usr/bin/c++ -g "CMakeFiles/test-strides.dir/test-strides.cpp.o" -o test-strides  ../libBlazar.a /usr/lib/x86_64-linux-gnu/libgtest_main.a /usr/lib/x86_64-linux-gnu/libgtest.a 

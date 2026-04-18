@@ -20,6 +20,7 @@
 
 #include <iosfwd>
 #include <array>  
+#include <initializer_list>
 
 #include "concepts.hpp"
 #include "shape.hpp" 
@@ -31,49 +32,104 @@ namespace blazar {
 class Strides {
 public:  
     static constexpr uint8_t limit = 8;    
+
     constexpr Strides() noexcept = default; 
   
-    template<Integral... Sizes>
-    constexpr Strides(Sizes... sizes)
-        : sizes_{static_cast<size_type>(sizes)...}
-        , size_(sizeof...(sizes)) {
-            if (size_ > limit) { 
-                throw Exception(std::string_view(
-                    "Strides rank limit exceeded: rank is " + std::to_string(size_) +
-                    ", but the maximum allowed is " + std::to_string(limit)
-                ).data());
+
+    template<Integral Size>
+    constexpr Strides(std::initializer_list<Size> shape)
+    {
+        const auto dimensions = shape.size();
+
+        if (dimensions > limit) {
+            throw Exception(
+                "Strides rank " + std::to_string(dimensions) +
+                " exceeds limit of " + std::to_string(limit)
+            );
+        }
+
+        size_ = static_cast<rank_type>(dimensions);
+
+        size_type dimension = 0;
+
+        for (auto size : shape) {
+            if constexpr (std::is_signed_v<Size>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
             }
-        } 
 
+            sizes_[dimension++] = static_cast<size_type>(size);
+        }
+    }
+
+    template<Integral... Sizes>
+    constexpr Strides(Sizes... sizes) 
+    :   size_(sizeof...(Sizes)) 
+    {
+        static_assert(sizeof...(Sizes) <= limit, "Strides rank exceeds limit.");
+        size_type dimension = 0;
+        (([&] {
+            if constexpr (std::is_signed_v<Sizes>) {
+                if (sizes < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(sizes) +
+                        ". Size must be >= -1."
+                    );
+                }
+            }
+
+            sizes_[dimension++] = static_cast<size_type>(sizes);
+        }()), ...);
+    }
+    
     template<Iterator Iterator>
-    constexpr Strides(Iterator begin, Iterator end) { 
-        rank_type dimension = 0;
-        for (auto iterator = begin; iterator != end; ++iterator) { 
-            sizes_.at(dimension++) = static_cast<size_type>(*iterator);
-        }
+    constexpr Strides(Iterator begin, Iterator end)
+    {
+        size_type dimension = 0;
 
-        size_ = dimension;
-        if (size_ > limit) {
-            throw Exception(std::string_view(
-                "Strides rank limit exceeded: rank is " + std::to_string(size_) +
-                ", but the maximum allowed is " + std::to_string(limit)
-            ).data());
+        for (Iterator iterator = begin; iterator != end; ++iterator) {
+            if (dimension >= limit) {
+                throw Exception(
+                    "Shape rank exceeds limit of " + std::to_string(limit)
+                );
+            }
+
+            auto size = *iterator;
+
+            if constexpr (std::is_signed_v<std::decay_t<decltype(size)>>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
+            }
+            sizes_[dimension++] = static_cast<size_type>(size);
         }
-    } 
+        size_ = dimension;
+    }
     
     constexpr Strides(const Shape& shape) noexcept
-    :   size_(shape.size()) {  
+    :   size_(shape.size()) 
+    {  
         if (size_ == 0) {
             return;
         }
 
-        sizes_.at(size_ - 1) = 1;
+        sizes_[size_ - 1] = 1;
         for (int size = size_ - 2; size >= 0; --size) {
-            sizes_.at(size) = sizes_.at(size + 1) * shape[size + 1];
+            sizes_[size] = sizes_[size + 1] * shape[size + 1];
         } 
     }
  
-    constexpr auto address() noexcept -> size_type* {
+    [[nodiscard]] constexpr auto address() noexcept -> size_type* {
         return sizes_.data();
     }
 
@@ -85,11 +141,11 @@ public:
         return size_; 
     } 
 
-    constexpr auto begin() { 
+    [[nodiscard]] constexpr auto begin() { 
         return sizes_.begin(); 
     }
     
-    constexpr auto end() {
+    [[nodiscard]] constexpr auto end() {
         return std::next(sizes_.begin(), size_);
     }
 
@@ -109,44 +165,61 @@ public:
         return std::next(sizes_.cbegin(), size_);
     }
 
-    
     [[nodiscard]] constexpr auto front() const { 
+        if (size_ == 0) {
+            throw Exception("Cannot call front() on an empty Strides");
+        }
         return sizes_.front(); 
     }
- 
-    [[nodiscard]] constexpr auto back() const {
-        return sizes_.at(size_);
-    }
-  
-    template<Integral Index>
-    [[nodiscard]] constexpr auto operator[](Index index) const -> size_type const& { 
-        return sizes_.at(indexing::normalize(index, size()));
-    }
+    
+    [[nodiscard]] constexpr auto back() const { 
+        if (size_ == 0) {
+            throw Exception("Cannot call back() on an empty Strides");  
+        }
+        return sizes_[size_-1];
+    }       
 
     template<Integral Index>
-    constexpr auto operator[](Index index) -> size_type& { 
-        return sizes_.at(indexing::normalize(index, size())); 
+    [[nodiscard]] constexpr auto operator[](Index index) const -> size_type const&{ 
+        return sizes_[indexing::normalize(index, size())]; 
     }
+    
+    template<Integral Index>
+    constexpr auto operator[](Index index) -> size_type& {
+        return sizes_[indexing::normalize(index, size())]; 
+    } 
 
     constexpr void append(size_type size) { 
         if (size_ + 1 > limit) {
-            throw Exception(std::string_view(
-                "Strides rank limit exceeded: rank is " + std::to_string(size_) +
-                ", but the maximum allowed is " + std::to_string(limit)
-            ).data());
+            throw Exception(
+                "Strides dimensions " + std::to_string(size_) + 
+                " exceeds limit of " + std::to_string(limit)
+            );
+        }  
+
+        if (size < -1) {
+            throw Exception(
+                "Invalid size for dimension " + std::to_string(size_) +
+                ": " + std::to_string(size) +
+                ". Size must be >= -1."
+            );
         }
-        sizes_.at(size_) = size;
-        size_ += 1; 
-    } 
+
+        sizes_[size_++] = size;
+    }
 
     constexpr void resize(rank_type dimensions) {
-        if (size_ > limit) {
-            throw Exception(std::string_view(
+        if (dimensions > limit) {
+            throw Exception(
                 "Strides dimensions limit exceeded: rank is " + std::to_string(size_) +
                 ", but the maximum allowed is " + std::to_string(limit)
-            ).data());
+            );
         }
-        size_ = dimensions;
+
+        if (dimensions > size_) {
+            std::fill(sizes_.begin() + size_, sizes_.begin() + dimensions, 0);
+        }
+        size_ = dimensions; 
     }
     
 private:

@@ -18,7 +18,7 @@ void print(std::ostream& stream, type type) {
 void print(std::ostream& ostream, const shape_t& shape, rank_type dimensions, bool reference = false) {
     ostream << "(";
     for (rank_type dimension = 0; dimension < dimensions; ++dimension) { 
-        ostream << reference ? shape.address[dimension] : shape.sizes[dimension];
+        ostream << (reference ? shape.address[dimension] : shape.sizes[dimension]);
 
         if (dimension + 1 < dimensions) {
             ostream << ", ";
@@ -30,7 +30,7 @@ void print(std::ostream& ostream, const shape_t& shape, rank_type dimensions, bo
 void print(std::ostream& ostream, const strides_t& strides, rank_type dimensions, bool reference = false) {
     ostream << "(";
     for (rank_type dimension = 0; dimension < dimensions; ++dimension) { 
-        ostream << reference ? strides.address[dimension] : strides.sizes[dimension];
+        ostream << (reference ? strides.address[dimension] : strides.sizes[dimension]);
         if (dimension + 1 < dimensions) {
             ostream << ", ";
         }

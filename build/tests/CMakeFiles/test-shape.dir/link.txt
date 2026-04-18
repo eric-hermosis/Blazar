@@ -1,0 +1,1 @@
+/usr/bin/c++ -g "CMakeFiles/test-shape.dir/test-shape.cpp.o" -o test-shape  ../libBlazar.a /usr/lib/x86_64-linux-gnu/libgtest_main.a /usr/lib/x86_64-linux-gnu/libgtest.a 
