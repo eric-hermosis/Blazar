@@ -1,10 +1,26 @@
+// Copyright 2026 Eric Hermosis
+//
+// This file is part of the Tannic Tensor Library.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+//
 #ifndef OPERATIONS_HPP_0x45524943
 #define OPERATIONS_HPP_0x45524943
 
-#include "blazar/types.hpp"
-#include "blazar/shape.hpp"
-#include "blazar/strides.hpp"
-#include "blazar/expressions/expression.hpp"
+#include "../types.hpp"
+#include "../shape.hpp"
+#include "../strides.hpp"
+#include "../expressions/expression.hpp"
 
 namespace blazar::expressions {
 
@@ -130,33 +146,33 @@ using namespace symbols;
 using namespace expressions;
 
 template<class Operand>
-constexpr auto operator-(Operand const& operand) {
-    return Unary<Negation, Operand>({}, operand);
+constexpr auto operator-(Operand && operand) {
+    return Unary<Negation, Operand>({}, std::forward<Operand>(operand));
 }
 
 template<class Augend, class Addend>
-constexpr auto operator+(Augend const& augend, Addend const& addend) {
-    return Binary<Addition, Augend, Addend>({}, augend, addend);
+constexpr auto operator+(Augend && augend, Addend && addend) {
+    return Binary<Addition, Augend, Addend>({}, std::forward<Augend>(augend), std::forward<Addend>(addend));
 }
 
 template<class Dividend, class Divisor>
-constexpr auto operator/(Dividend const& dividend, Divisor const& divisor) {
-    return Binary<Division, Dividend, Divisor>({}, dividend, divisor);
+constexpr auto operator/(Dividend && dividend, Divisor && divisor) {
+    return Binary<Division, Dividend, Divisor>({}, std::forward<Dividend>(dividend), std::forward<Divisor>(divisor));
 }
 
 template<class Minuend, class Subtrahend>
-constexpr auto operator-(Minuend const& minuend, Subtrahend const& subtrahend) {
-    return Binary<Subtraction, Subtrahend, Minuend>({}, minuend, subtrahend);
+constexpr auto operator-(Minuend && minuend, Subtrahend && subtrahend) {
+    return Binary<Subtraction, Subtrahend, Minuend>({}, std::forward<Minuend>(minuend), std::forward<Subtrahend>(subtrahend));
 }
 
 template<class Multiplicand, class Multiplier>
-constexpr auto operator*(Multiplicand const& multiplicand, Multiplier const& multiplier) {
-    return Binary<Multiplication, Multiplicand, Multiplier>({}, multiplicand, multiplier);
+constexpr auto operator*(Multiplicand && multiplicand, Multiplier && multiplier) {
+    return Binary<Multiplication, Multiplicand, Multiplier>({}, std::forward<Multiplicand>(multiplicand), std::forward<Multiplicand>(multiplier));
 }
 
 template<class Base, class Exponent>
-constexpr auto operator^(Base const& base, Exponent const& exponent) {
-    return Binary<Exponentiation, Base, Exponent>{{}, base, exponent};
+constexpr auto operator^(Base && base, Exponent && exponent) {
+    return Binary<Exponentiation, Base, Exponent>({}, std::forward<Base>(base), std::forward<Exponent>(exponent));
 } 
 
 } namespace blazar {

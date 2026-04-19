@@ -14,32 +14,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#ifndef EXPRESSION_HPP_0x45524943
-#define EXPRESSION_HPP_0x45524943
- 
-#include <type_traits>
-#include <tuple>
 
-namespace blazar::expressions {
+#ifndef VIEWS_HPP_0x45524943
+#define VIEWS_HPP_0x45524943
 
-template<class Expression>
-class Trait {
-public:
-    using Type = typename std::decay<Expression>::type;
-};
+namespace blazar {
 
-template<class Symbol, class ... Sources>
-class Expression {
-public:
-    Symbol symbol;
-    std::tuple<typename Trait<Sources>::Type ...> sources;
 
-    constexpr Expression(Symbol symbol, Sources const& ... sources) 
-    :   symbol(symbol)
-    ,   sources(sources...)
-    {}
-};
 
+    
 }
+
 
 #endif
