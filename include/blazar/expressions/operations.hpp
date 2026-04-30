@@ -167,7 +167,7 @@ constexpr auto operator-(Minuend && minuend, Subtrahend && subtrahend) {
 
 template<class Multiplicand, class Multiplier>
 constexpr auto operator*(Multiplicand && multiplicand, Multiplier && multiplier) {
-    return Binary<Multiplication, Multiplicand, Multiplier>({}, std::forward<Multiplicand>(multiplicand), std::forward<Multiplicand>(multiplier));
+    return Binary<Multiplication, Multiplicand, Multiplier>({}, std::forward<Multiplicand>(multiplicand), std::forward<Multiplier>(multiplier));
 }
 
 template<class Base, class Exponent>
