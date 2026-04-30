@@ -162,7 +162,7 @@ constexpr auto operator/(Dividend && dividend, Divisor && divisor) {
 
 template<class Minuend, class Subtrahend>
 constexpr auto operator-(Minuend && minuend, Subtrahend && subtrahend) {
-    return Binary<Subtraction, Subtrahend, Minuend>({}, std::forward<Minuend>(minuend), std::forward<Subtrahend>(subtrahend));
+    return Binary<Subtraction, Minuend, Subtrahend>({}, std::forward<Minuend>(minuend), std::forward<Subtrahend>(subtrahend));
 }
 
 template<class Multiplicand, class Multiplier>

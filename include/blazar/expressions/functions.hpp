@@ -27,6 +27,8 @@ namespace blazar::expressions {
 template<class Symbol, class ... Arguments>
 class Function; 
 
+// TODO: Return contiguous expression instead of strided on
+
 template<class Symbol, class Argument>
 class Function<Symbol, Argument> : public Expression<Symbol, Argument> {
 public: 
