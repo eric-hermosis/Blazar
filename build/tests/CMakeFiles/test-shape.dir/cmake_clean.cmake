@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/test-shape.dir/link.d"
   "CMakeFiles/test-shape.dir/test-shape.cpp.o"
   "CMakeFiles/test-shape.dir/test-shape.cpp.o.d"
   "test-shape"

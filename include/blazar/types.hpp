@@ -21,124 +21,10 @@
 #include <cstdint>
 #include <cstddef>
 #include <string_view> 
-#include <complex>
+#include <complex> 
+#include <blazar/traits.hpp>
 
-#include "core/types.h"
- 
-namespace {
- 
-static constexpr struct {
-    std::string_view name;
-    std::size_t      size; 
-    std::uint8_t     bits; 
-}   
-
-traits[TYPES] = {
-
-    [boolean] = {
-        .name = "boolean",
-        .size = sizeof(std::uint8_t),
-        .bits = 8,
-    },
-
-    [uint8] = {
-        .name = "uint8",
-        .size = sizeof(std::uint8_t),
-        .bits = 8,
-    },
-
-    [uint16] = {
-        .name = "uint16",
-        .size = sizeof(std::uint16_t),
-        .bits = 16,
-    },
-
-    [uint32] = {
-        .name = "uint32",
-        .size = sizeof(std::uint32_t),
-        .bits = 32,
-    },
-
-    [uint64] = {
-        .name = "uint64",
-        .size = sizeof(std::uint64_t),
-        .bits = 64,
-    },
-
-    [int8] = {
-        .name = "int8",
-        .size = sizeof(std::int8_t),
-        .bits = 8,
-    },
-
-    [int16] = {
-        .name = "int16",
-        .size = sizeof(std::int16_t),
-        .bits = 16,
-    },
-
-    [int32] = {
-        .name = "int32",
-        .size = sizeof(std::int32_t),
-        .bits = 32,
-    },
-
-    [int64] = {
-        .name = "int64",
-        .size = sizeof(std::int64_t),
-        .bits = 64,
-    },
-
-    [float16] = {
-        .name = "float16",
-        .size = 2,
-        .bits = 16,
-    },
-
-    [bfloat16] = {
-        .name = "bfloat16",
-        .size = 2,
-        .bits = 16,
-    },
-
-    [float32] = {
-        .name = "float32",
-        .size = sizeof(float),
-        .bits = 32,
-    },
-
-    [float64] = {
-        .name = "float64",
-        .size = sizeof(double),
-        .bits = 64,
-    },
-
-    [complex64] = {
-        .name = "complex64",
-        .size = 2 * sizeof(float),
-        .bits = 64,
-    },
-
-    [complex128] = {
-        .name = "complex128",
-        .size = 2 * sizeof(double),
-        .bits = 128,
-    },
-
-    [any] = {
-        .name = "any"
-    },
-
-    [object] = {
-        .name = "object" 
-    },
-
-    [unknown] = {
-        .name = "unknown" 
-    },
-};
-
-} namespace blazar {
+namespace blazar {
 
 class Type {
     
@@ -159,15 +45,15 @@ public:
     }
 
     [[nodiscard]] constexpr auto name() const noexcept ->  std::string_view  {
-        return traits[type_].name;
+        return traits::table[type_].name;
     }
 
     [[nodiscard]] constexpr auto size() const noexcept -> std::size_t {
-        return traits[type_].size;
+        return traits::table[type_].size;
     }
 
     [[nodiscard]] constexpr auto bits() const noexcept -> std::uint8_t  {
-        return traits[type_].bits;
+        return traits::table[type_].bits;
     }
 
     template<typename T>
@@ -197,4 +83,4 @@ auto operator<<(std::ostream&, Type type) -> std::ostream&;
 
 } // namespace blazar
     
-#endif // TYPE_HPP_0x45524943
+#endif 

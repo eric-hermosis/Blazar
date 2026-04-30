@@ -1,5 +1,6 @@
-test-shape 6 0.000559157
-test-types 6 0.000499608
-test-strides 4 0.000957015
-test-operations 3 0.00106332
+test-operations 7 0.000383082
+test-shape 7 0.000340563
+test-strides 7 0.000412787
+test-types 7 0.0003096
+test-storage 5 0.000453534
 ---

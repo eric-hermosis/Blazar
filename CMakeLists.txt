@@ -1,5 +1,8 @@
-cmake_minimum_required (VERSION 3.28)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+cmake_minimum_required (VERSION 4.2)
+set(CMAKE_CXX_STANDARD 26)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)  
+
 project(Blazar)
 
 file(GLOB SOURCES 
@@ -11,12 +14,12 @@ add_library(Blazar STATIC ${SOURCES})
 target_include_directories(Blazar PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 set_target_properties(Blazar PROPERTIES
-    CXX_STANDARD 23
+    CXX_STANDARD 26
     CXX_STANDARD_REQUIRED ON 
 ) 
 
-option(BUILD_TESTS ON)
-option(BUILD_MAIN OFF) 
+option(BUILD_TESTS "Build tests" ON)
+option(BUILD_MAIN "Build main executable" OFF) 
 
 if(BUILD_TESTS)
     add_subdirectory(tests)
@@ -28,7 +31,7 @@ if(BUILD_MAIN)
     target_include_directories(main PRIVATE include)
 
     set_target_properties(main PROPERTIES
-        CXX_STANDARD 23
+        CXX_STANDARD 26
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )

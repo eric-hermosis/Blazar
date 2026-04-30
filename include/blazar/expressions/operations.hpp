@@ -1,6 +1,6 @@
 // Copyright 2026 Eric Hermosis
 //
-// This file is part of the Tannic Tensor Library.
+// This file is part of the Blazar Tensor Library.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,11 +17,11 @@
 #ifndef OPERATIONS_HPP_0x45524943
 #define OPERATIONS_HPP_0x45524943
 
-#include "../types.hpp"
-#include "../shape.hpp"
-#include "../strides.hpp"
-#include "../expressions/expression.hpp"
-
+#include <blazar/types.hpp>
+#include <blazar/shape.hpp>
+#include <blazar/strides.hpp>
+#include <blazar/expressions/expression.hpp>
+ 
 namespace blazar::expressions {
 
 template<class Symbol, class Operand>

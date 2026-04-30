@@ -1,1 +1,1 @@
-/usr/bin/c++ -g "CMakeFiles/test-types.dir/test-types.cpp.o" -o test-types  ../libBlazar.a /usr/lib/x86_64-linux-gnu/libgtest_main.a /usr/lib/x86_64-linux-gnu/libgtest.a 
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/test-types.dir/link.d "CMakeFiles/test-types.dir/test-types.cpp.o" -o test-types  ../libBlazar.a ../lib/libgtest_main.a ../lib/libgtest.a

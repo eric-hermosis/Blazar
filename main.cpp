@@ -1,13 +1,18 @@
-#include <type_traits>
-#include <tuple> 
- 
 #include <cstdint>
 #include <cstddef>
+#include <memory>
+#include <stack>
+#include <deque>
+#include <vector>
+#include <cassert>
+#include <blazar/memory.hpp>
+#include <blazar/storage.hpp> 
+
 #include <iostream>
-#include <blazar/shape.hpp>
-using namespace blazar;
+using namespace blazar; 
 
 int main() { 
-    Shape shape(1,2,3,4,5); 
-    std::cout << shape << std::endl;
+    Storage storage(1024, Host()); 
+    Storage storage2 = storage;
+    std::cout << storage.get()->references() << std::endl;
 }

@@ -40,7 +40,7 @@ enum type {
 };  
 
 #ifdef __cplusplus 
-#include <cstdint>  
+#include <cstdint>   
 using rank_type  = std::uint8_t; 
 using code_type  = std::int16_t; 
 using size_type  = std::int64_t ;

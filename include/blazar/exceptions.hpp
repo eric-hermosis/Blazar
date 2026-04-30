@@ -31,11 +31,11 @@ public:
     :   message_(std::move(message))
     ,   location_(std::move(location)) {}    
   
-    [[nodiscard]] constexpr auto what() const noexcept -> const char* override { 
+    [[nodiscard]] const char* what() const noexcept override { 
         return message_.c_str(); 
     }
   
-    [[nodiscard]] constexpr auto where() const noexcept -> const std::source_location& {
+    [[nodiscard]] auto where() const noexcept -> const std::source_location& {
         return location_;
     }
     

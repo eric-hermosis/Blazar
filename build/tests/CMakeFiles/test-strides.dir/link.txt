@@ -1,1 +1,1 @@
-/usr/bin/c++ -g "CMakeFiles/test-strides.dir/test-strides.cpp.o" -o test-strides  ../libBlazar.a /usr/lib/x86_64-linux-gnu/libgtest_main.a /usr/lib/x86_64-linux-gnu/libgtest.a 
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/test-strides.dir/link.d "CMakeFiles/test-strides.dir/test-strides.cpp.o" -o test-strides  ../libBlazar.a ../lib/libgtest_main.a ../lib/libgtest.a

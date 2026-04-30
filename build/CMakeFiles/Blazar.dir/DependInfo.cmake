@@ -8,7 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/eric/Blazar/src/io.cpp" "CMakeFiles/Blazar.dir/src/io.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/io.cpp.o.d"
+  "/home/eric-hermosis/Escritorio/Blazar/src/io.cpp" "CMakeFiles/Blazar.dir/src/io.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/io.cpp.o.d"
+  "/home/eric-hermosis/Escritorio/Blazar/src/memory.cpp" "CMakeFiles/Blazar.dir/src/memory.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/memory.cpp.o.d"
+  "/home/eric-hermosis/Escritorio/Blazar/src/resources.cpp" "CMakeFiles/Blazar.dir/src/resources.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/resources.cpp.o.d"
+  "/home/eric-hermosis/Escritorio/Blazar/src/storage.cpp" "CMakeFiles/Blazar.dir/src/storage.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/storage.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

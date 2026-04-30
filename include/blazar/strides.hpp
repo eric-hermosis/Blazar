@@ -1,4 +1,4 @@
-// Copyright 2025 Eric Hermosis
+// Copyright 2026 Eric Hermosis
 //
 // This file is part of the Blazar Tensor Library.
 //

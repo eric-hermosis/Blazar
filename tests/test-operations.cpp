@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <blazar/variable.hpp>
+#include <blazar/variables.hpp>
 #include <blazar/expressions/operations.hpp> 
 
 using namespace blazar;

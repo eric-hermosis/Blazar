@@ -1,6 +1,6 @@
 // Copyright 2026 Eric Hermosis
 //
-// This file is part of the Tannic Tensor Library.
+// This file is part of the Blazar Tensor Library.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

@@ -1,1 +1,1 @@
-/usr/bin/c++ -g "CMakeFiles/test-operations.dir/test-operations.cpp.o" -o test-operations  ../libBlazar.a /usr/lib/x86_64-linux-gnu/libgtest_main.a /usr/lib/x86_64-linux-gnu/libgtest.a 
+/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/test-operations.dir/link.d "CMakeFiles/test-operations.dir/test-operations.cpp.o" -o test-operations  ../libBlazar.a ../lib/libgtest_main.a ../lib/libgtest.a

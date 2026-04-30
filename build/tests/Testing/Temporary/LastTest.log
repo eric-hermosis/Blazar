@@ -1,13 +1,13 @@
-Start testing: Apr 18 21:44 UTC
+Start testing: Apr 30 17:20 -03
 ----------------------------------------------------------
-1/4 Testing: test-operations
-1/4 Test: test-operations
-Command: "/home/eric/Blazar/build/tests/test-operations"
-Directory: /home/eric/Blazar/build/tests
-"test-operations" start time: Apr 18 21:44 UTC
+1/5 Testing: test-operations
+1/5 Test: test-operations
+Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-operations"
+Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
+"test-operations" start time: Apr 30 17:20 -03
 Output:
 ----------------------------------------------------------
-Running main() from ./googletest/src/gtest_main.cc
+Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
 [==========] Running 8 tests from 1 test suite.
 [----------] Global test environment set-up.
 [----------] 8 tests from OperationsTest
@@ -36,18 +36,18 @@ Running main() from ./googletest/src/gtest_main.cc
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-operations" end time: Apr 18 21:44 UTC
+"test-operations" end time: Apr 30 17:20 -03
 "test-operations" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-2/4 Testing: test-shape
-2/4 Test: test-shape
-Command: "/home/eric/Blazar/build/tests/test-shape"
-Directory: /home/eric/Blazar/build/tests
-"test-shape" start time: Apr 18 21:44 UTC
+2/5 Testing: test-shape
+2/5 Test: test-shape
+Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-shape"
+Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
+"test-shape" start time: Apr 30 17:20 -03
 Output:
 ----------------------------------------------------------
-Running main() from ./googletest/src/gtest_main.cc
+Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
 [==========] Running 16 tests from 1 test suite.
 [----------] Global test environment set-up.
 [----------] 16 tests from ShapeTest
@@ -92,18 +92,44 @@ Running main() from ./googletest/src/gtest_main.cc
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-shape" end time: Apr 18 21:44 UTC
+"test-shape" end time: Apr 30 17:20 -03
 "test-shape" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-3/4 Testing: test-strides
-3/4 Test: test-strides
-Command: "/home/eric/Blazar/build/tests/test-strides"
-Directory: /home/eric/Blazar/build/tests
-"test-strides" start time: Apr 18 21:44 UTC
+3/5 Testing: test-storage
+3/5 Test: test-storage
+Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-storage"
+Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
+"test-storage" start time: Apr 30 17:20 -03
 Output:
 ----------------------------------------------------------
-Running main() from ./googletest/src/gtest_main.cc
+Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
+[==========] Running 1 test from 1 test suite.
+[----------] Global test environment set-up.
+[----------] 1 test from TestStorage
+[ RUN      ] TestStorage.TestRefCount
+[       OK ] TestStorage.TestRefCount (0 ms)
+[----------] 1 test from TestStorage (0 ms total)
+
+[----------] Global test environment tear-down
+[==========] 1 test from 1 test suite ran. (0 ms total)
+[  PASSED  ] 1 test.
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-storage" end time: Apr 30 17:20 -03
+"test-storage" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: test-strides
+4/5 Test: test-strides
+Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-strides"
+Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
+"test-strides" start time: Apr 30 17:20 -03
+Output:
+----------------------------------------------------------
+Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
 [==========] Running 15 tests from 1 test suite.
 [----------] Global test environment set-up.
 [----------] 15 tests from StridesTest
@@ -146,18 +172,18 @@ Running main() from ./googletest/src/gtest_main.cc
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-strides" end time: Apr 18 21:44 UTC
+"test-strides" end time: Apr 30 17:20 -03
 "test-strides" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-4/4 Testing: test-types
-4/4 Test: test-types
-Command: "/home/eric/Blazar/build/tests/test-types"
-Directory: /home/eric/Blazar/build/tests
-"test-types" start time: Apr 18 21:44 UTC
+5/5 Testing: test-types
+5/5 Test: test-types
+Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-types"
+Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
+"test-types" start time: Apr 30 17:20 -03
 Output:
 ----------------------------------------------------------
-Running main() from ./googletest/src/gtest_main.cc
+Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
 [==========] Running 4 tests from 2 test suites.
 [----------] Global test environment set-up.
 [----------] 3 tests from TestTypes
@@ -181,8 +207,8 @@ Running main() from ./googletest/src/gtest_main.cc
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-types" end time: Apr 18 21:44 UTC
+"test-types" end time: Apr 30 17:20 -03
 "test-types" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Apr 18 21:44 UTC
+End testing: Apr 30 17:20 -03

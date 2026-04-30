@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/test-strides.dir/link.d"
   "CMakeFiles/test-strides.dir/test-strides.cpp.o"
   "CMakeFiles/test-strides.dir/test-strides.cpp.o.d"
   "test-strides"
