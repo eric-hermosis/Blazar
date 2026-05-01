@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/test-shape.dir/link.d "CMakeFiles/test-shape.dir/test-shape.cpp.o" -o test-shape  ../libBlazar.a ../lib/libgtest_main.a ../lib/libgtest.a

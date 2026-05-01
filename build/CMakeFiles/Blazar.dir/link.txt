@@ -1,2 +1,0 @@
-/usr/bin/ar qc libBlazar.a CMakeFiles/Blazar.dir/src/io.cpp.o CMakeFiles/Blazar.dir/src/memory.cpp.o CMakeFiles/Blazar.dir/src/nodes.cpp.o CMakeFiles/Blazar.dir/src/resources.cpp.o CMakeFiles/Blazar.dir/src/storage.cpp.o
-/usr/bin/ranlib libBlazar.a

@@ -1,1 +1,0 @@
-/usr/bin/c++ -g -Wl,--dependency-file=CMakeFiles/test-storage.dir/link.d "CMakeFiles/test-storage.dir/test-storage.cpp.o" -o test-storage  ../libBlazar.a ../lib/libgtest_main.a ../lib/libgtest.a
