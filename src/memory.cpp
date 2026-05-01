@@ -49,14 +49,7 @@ auto Memory::operator new(std::size_t) -> void* {
 void Memory::operator delete(void* address, std::size_t) noexcept {
     pool.free.push(address);
 }
-
-Memory::Memory() 
-:   references_(0)
-,   environment_(std::monostate{})
-,   body_{} {
-    body_.buffer.address = nullptr;
-}   
-
+  
 Memory::Memory(std::size_t nbytes, Environment const& environment)
 :   environment_(environment)
 ,   references_(1)

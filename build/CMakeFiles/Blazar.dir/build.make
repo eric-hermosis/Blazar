@@ -100,10 +100,24 @@ CMakeFiles/Blazar.dir/src/memory.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Blazar.dir/src/memory.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/eric-hermosis/Escritorio/Blazar/src/memory.cpp -o CMakeFiles/Blazar.dir/src/memory.cpp.s
 
+CMakeFiles/Blazar.dir/src/nodes.cpp.o: CMakeFiles/Blazar.dir/flags.make
+CMakeFiles/Blazar.dir/src/nodes.cpp.o: /home/eric-hermosis/Escritorio/Blazar/src/nodes.cpp
+CMakeFiles/Blazar.dir/src/nodes.cpp.o: CMakeFiles/Blazar.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eric-hermosis/Escritorio/Blazar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Blazar.dir/src/nodes.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Blazar.dir/src/nodes.cpp.o -MF CMakeFiles/Blazar.dir/src/nodes.cpp.o.d -o CMakeFiles/Blazar.dir/src/nodes.cpp.o -c /home/eric-hermosis/Escritorio/Blazar/src/nodes.cpp
+
+CMakeFiles/Blazar.dir/src/nodes.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Blazar.dir/src/nodes.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/eric-hermosis/Escritorio/Blazar/src/nodes.cpp > CMakeFiles/Blazar.dir/src/nodes.cpp.i
+
+CMakeFiles/Blazar.dir/src/nodes.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Blazar.dir/src/nodes.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/eric-hermosis/Escritorio/Blazar/src/nodes.cpp -o CMakeFiles/Blazar.dir/src/nodes.cpp.s
+
 CMakeFiles/Blazar.dir/src/resources.cpp.o: CMakeFiles/Blazar.dir/flags.make
 CMakeFiles/Blazar.dir/src/resources.cpp.o: /home/eric-hermosis/Escritorio/Blazar/src/resources.cpp
 CMakeFiles/Blazar.dir/src/resources.cpp.o: CMakeFiles/Blazar.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eric-hermosis/Escritorio/Blazar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Blazar.dir/src/resources.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eric-hermosis/Escritorio/Blazar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Blazar.dir/src/resources.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Blazar.dir/src/resources.cpp.o -MF CMakeFiles/Blazar.dir/src/resources.cpp.o.d -o CMakeFiles/Blazar.dir/src/resources.cpp.o -c /home/eric-hermosis/Escritorio/Blazar/src/resources.cpp
 
 CMakeFiles/Blazar.dir/src/resources.cpp.i: cmake_force
@@ -117,7 +131,7 @@ CMakeFiles/Blazar.dir/src/resources.cpp.s: cmake_force
 CMakeFiles/Blazar.dir/src/storage.cpp.o: CMakeFiles/Blazar.dir/flags.make
 CMakeFiles/Blazar.dir/src/storage.cpp.o: /home/eric-hermosis/Escritorio/Blazar/src/storage.cpp
 CMakeFiles/Blazar.dir/src/storage.cpp.o: CMakeFiles/Blazar.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eric-hermosis/Escritorio/Blazar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Blazar.dir/src/storage.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/eric-hermosis/Escritorio/Blazar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Blazar.dir/src/storage.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Blazar.dir/src/storage.cpp.o -MF CMakeFiles/Blazar.dir/src/storage.cpp.o.d -o CMakeFiles/Blazar.dir/src/storage.cpp.o -c /home/eric-hermosis/Escritorio/Blazar/src/storage.cpp
 
 CMakeFiles/Blazar.dir/src/storage.cpp.i: cmake_force
@@ -132,6 +146,7 @@ CMakeFiles/Blazar.dir/src/storage.cpp.s: cmake_force
 Blazar_OBJECTS = \
 "CMakeFiles/Blazar.dir/src/io.cpp.o" \
 "CMakeFiles/Blazar.dir/src/memory.cpp.o" \
+"CMakeFiles/Blazar.dir/src/nodes.cpp.o" \
 "CMakeFiles/Blazar.dir/src/resources.cpp.o" \
 "CMakeFiles/Blazar.dir/src/storage.cpp.o"
 
@@ -140,11 +155,12 @@ Blazar_EXTERNAL_OBJECTS =
 
 libBlazar.a: CMakeFiles/Blazar.dir/src/io.cpp.o
 libBlazar.a: CMakeFiles/Blazar.dir/src/memory.cpp.o
+libBlazar.a: CMakeFiles/Blazar.dir/src/nodes.cpp.o
 libBlazar.a: CMakeFiles/Blazar.dir/src/resources.cpp.o
 libBlazar.a: CMakeFiles/Blazar.dir/src/storage.cpp.o
 libBlazar.a: CMakeFiles/Blazar.dir/build.make
 libBlazar.a: CMakeFiles/Blazar.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/eric-hermosis/Escritorio/Blazar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX static library libBlazar.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/eric-hermosis/Escritorio/Blazar/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX static library libBlazar.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/Blazar.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Blazar.dir/link.txt --verbose=$(VERBOSE)
 

@@ -21,21 +21,21 @@
 #include <tuple>
 
 namespace blazar::expressions {
-
+ 
 template<class Expression>
 class Trait {
 public:
-    using Type = typename std::decay<Expression>::type;
+    using type = typename std::decay<Expression>::type;
 };
 
-template<class Symbol, class ... Sources>
+template<class Primitive, class ... Expressions>
 class Expression {
 public:
-    Symbol symbol;
-    std::tuple<typename Trait<Sources>::Type ...> sources;
+    Primitive primitive;
+    std::tuple<typename Trait<Expressions>::type ...> sources;
 
-    constexpr Expression(Symbol symbol, Sources const& ... sources) 
-    :   symbol(symbol)
+    constexpr Expression(Primitive primitive, Expressions const& ... sources) 
+    :   primitive(primitive)
     ,   sources(sources...)
     {}
 };

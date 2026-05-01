@@ -9,6 +9,7 @@ namespace blazar {
 
 class Variable {
 public: 
+
     constexpr Variable()
     :   type_(unknown)
     ,   size_(0)

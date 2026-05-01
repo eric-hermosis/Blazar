@@ -1,10 +1,10 @@
-Start testing: Apr 30 17:20 -03
+Start testing: May 01 14:03 -03
 ----------------------------------------------------------
 1/5 Testing: test-operations
 1/5 Test: test-operations
 Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-operations"
 Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
-"test-operations" start time: Apr 30 17:20 -03
+"test-operations" start time: May 01 14:03 -03
 Output:
 ----------------------------------------------------------
 Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
@@ -36,7 +36,7 @@ Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-operations" end time: Apr 30 17:20 -03
+"test-operations" end time: May 01 14:03 -03
 "test-operations" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -44,7 +44,7 @@ Test Passed.
 2/5 Test: test-shape
 Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-shape"
 Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
-"test-shape" start time: Apr 30 17:20 -03
+"test-shape" start time: May 01 14:03 -03
 Output:
 ----------------------------------------------------------
 Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
@@ -92,7 +92,7 @@ Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-shape" end time: Apr 30 17:20 -03
+"test-shape" end time: May 01 14:03 -03
 "test-shape" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -100,7 +100,7 @@ Test Passed.
 3/5 Test: test-storage
 Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-storage"
 Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
-"test-storage" start time: Apr 30 17:20 -03
+"test-storage" start time: May 01 14:03 -03
 Output:
 ----------------------------------------------------------
 Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
@@ -118,7 +118,7 @@ Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-storage" end time: Apr 30 17:20 -03
+"test-storage" end time: May 01 14:03 -03
 "test-storage" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -126,7 +126,7 @@ Test Passed.
 4/5 Test: test-strides
 Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-strides"
 Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
-"test-strides" start time: Apr 30 17:20 -03
+"test-strides" start time: May 01 14:03 -03
 Output:
 ----------------------------------------------------------
 Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
@@ -172,7 +172,7 @@ Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-strides" end time: Apr 30 17:20 -03
+"test-strides" end time: May 01 14:03 -03
 "test-strides" time elapsed: 00:00:00
 ----------------------------------------------------------
 
@@ -180,7 +180,7 @@ Test Passed.
 5/5 Test: test-types
 Command: "/home/eric-hermosis/Escritorio/Blazar/build/tests/test-types"
 Directory: /home/eric-hermosis/Escritorio/Blazar/build/tests
-"test-types" start time: Apr 30 17:20 -03
+"test-types" start time: May 01 14:03 -03
 Output:
 ----------------------------------------------------------
 Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest-src/googletest/src/gtest_main.cc
@@ -207,8 +207,8 @@ Running main() from /home/eric-hermosis/Escritorio/Blazar/build/_deps/googletest
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"test-types" end time: Apr 30 17:20 -03
+"test-types" end time: May 01 14:03 -03
 "test-types" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: Apr 30 17:20 -03
+End testing: May 01 14:03 -03

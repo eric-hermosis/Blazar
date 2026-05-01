@@ -383,6 +383,30 @@ src/memory.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Blazar.dir/build.make CMakeFiles/Blazar.dir/src/memory.cpp.s
 .PHONY : src/memory.cpp.s
 
+src/nodes.o: src/nodes.cpp.o
+.PHONY : src/nodes.o
+
+# target to build an object file
+src/nodes.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Blazar.dir/build.make CMakeFiles/Blazar.dir/src/nodes.cpp.o
+.PHONY : src/nodes.cpp.o
+
+src/nodes.i: src/nodes.cpp.i
+.PHONY : src/nodes.i
+
+# target to preprocess a source file
+src/nodes.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Blazar.dir/build.make CMakeFiles/Blazar.dir/src/nodes.cpp.i
+.PHONY : src/nodes.cpp.i
+
+src/nodes.s: src/nodes.cpp.s
+.PHONY : src/nodes.s
+
+# target to generate assembly for a file
+src/nodes.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Blazar.dir/build.make CMakeFiles/Blazar.dir/src/nodes.cpp.s
+.PHONY : src/nodes.cpp.s
+
 src/resources.o: src/resources.cpp.o
 .PHONY : src/resources.o
 
@@ -464,6 +488,9 @@ help:
 	@echo "... src/memory.o"
 	@echo "... src/memory.i"
 	@echo "... src/memory.s"
+	@echo "... src/nodes.o"
+	@echo "... src/nodes.i"
+	@echo "... src/nodes.s"
 	@echo "... src/resources.o"
 	@echo "... src/resources.i"
 	@echo "... src/resources.s"

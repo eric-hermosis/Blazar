@@ -20,15 +20,16 @@
 #include <blazar/types.hpp>
 #include <blazar/shape.hpp>
 #include <blazar/strides.hpp>
+#include <blazar/symbols.hpp>
 #include <blazar/expressions/expression.hpp>
  
 namespace blazar::expressions {
 
-template<class Symbol, class Operand>
-class Unary : public Expression<Symbol, Operand> {
+template<class Operation, class Operand>
+class Unary : public Expression<Operation, Operand> {
 public: 
-    constexpr Unary(Symbol symbol, Operand const& operand) 
-    :   Expression<Symbol, Operand>(symbol, operand) 
+    constexpr Unary(Operation operation, Operand const& operand) 
+    :   Expression<Operation, Operand>(operation, operand) 
     {}
     
     [[nodiscard]] constexpr auto type() const -> Type const & {
@@ -56,15 +57,15 @@ public:
     }   
 };
  
-template<class Symbol, class Operand, class Cooperand>
-class Binary : public Expression<Symbol, Operand, Cooperand> {
+template<class Operation, class Operand, class Cooperand>
+class Binary : public Expression<Operation, Operand, Cooperand> {
 public: 
     constexpr static auto promote(Type const& first, Type const& second) -> Type {
         return (first.id() > second.id()) ? first : second;     
     }
 
-    constexpr Binary(Symbol symbol, Operand const& operand, Cooperand const& cooperand)
-    :   Expression<Symbol, Operand, Cooperand>(symbol, operand, cooperand) 
+    constexpr Binary(Operation operation, Operand const& operand, Cooperand const& cooperand)
+    :   Expression<Operation, Operand, Cooperand>(operation, operand, cooperand) 
     {
         rank_ = std::max(operand.rank(), cooperand.rank());  
         
@@ -131,18 +132,35 @@ private:
     rank_type rank_; 
 };
 
-} namespace blazar::symbols { 
-     
-struct Negation {};
-struct Addition {};
-struct Division {};
-struct Subtraction{}; 
-struct Multiplication {}; 
-struct Exponentiation {};
+} namespace blazar::operations {   
+ 
+struct Negation {
+    operator Symbol() const;
+};
 
-} namespace blazar::operations {
+struct Addition {
+    operator Symbol() const; 
+};
 
-using namespace symbols; 
+struct Division {
+    operator Symbol() const; 
+};
+
+struct Subtraction{
+    operator Symbol() const; 
+}; 
+
+struct Multiplication {
+    operator Symbol() const; 
+}; 
+
+struct Exponentiation { 
+    operator Symbol() const;
+};
+
+} namespace blazar::operators {
+
+using namespace operations; 
 using namespace expressions;
 
 template<class Operand>
@@ -177,11 +195,11 @@ constexpr auto operator^(Base && base, Exponent && exponent) {
 
 } namespace blazar {
 
-using blazar::operations::operator+;
-using blazar::operations::operator-;
-using blazar::operations::operator*;
-using blazar::operations::operator/;
-using blazar::operations::operator^;
+using blazar::operators::operator+;
+using blazar::operators::operator-;
+using blazar::operators::operator*;
+using blazar::operators::operator/;
+using blazar::operators::operator^;
 
 }
 

@@ -15,6 +15,9 @@
 // limitations under the License.
 // 
 
+#ifndef MEMORY_HPP_0x45524943 
+#define MEMORY_HPP_0x45524943 
+
 #include <cstdint>
 #include <cstddef>
 #include <memory>
@@ -28,8 +31,7 @@ public:
     auto operator new(std::size_t) -> void*;
     void operator delete(void*, std::size_t) noexcept;  
     Memory(std::size_t, Environment const&);
-    ~Memory();  
-    Memory();   
+    ~Memory();   
     Memory(Memory const&) = delete;
     Memory(Memory &&) = delete; 
     auto operator=(Memory const&) -> Memory& = delete;
@@ -50,3 +52,5 @@ private:
 };
 
 }
+
+#endif

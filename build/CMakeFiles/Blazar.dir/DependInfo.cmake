@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/eric-hermosis/Escritorio/Blazar/src/io.cpp" "CMakeFiles/Blazar.dir/src/io.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/io.cpp.o.d"
   "/home/eric-hermosis/Escritorio/Blazar/src/memory.cpp" "CMakeFiles/Blazar.dir/src/memory.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/memory.cpp.o.d"
+  "/home/eric-hermosis/Escritorio/Blazar/src/nodes.cpp" "CMakeFiles/Blazar.dir/src/nodes.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/nodes.cpp.o.d"
   "/home/eric-hermosis/Escritorio/Blazar/src/resources.cpp" "CMakeFiles/Blazar.dir/src/resources.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/resources.cpp.o.d"
   "/home/eric-hermosis/Escritorio/Blazar/src/storage.cpp" "CMakeFiles/Blazar.dir/src/storage.cpp.o" "gcc" "CMakeFiles/Blazar.dir/src/storage.cpp.o.d"
   )
