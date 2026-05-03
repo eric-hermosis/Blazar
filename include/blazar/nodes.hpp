@@ -30,14 +30,15 @@ class Symbol;
 
 class Node {      
 public:  
+    static auto allocate(Symbol const& symbol, int arity) -> Node*; 
     auto operator new(std::size_t) -> void*;
     void operator delete(void*, std::size_t) noexcept;    
-    Node(Symbol const& symbol, int arity); 
+    Node(Symbol const&, int); 
     ~Node() = default;
-    Node(Node const& other) = delete;
-    Node(Node && other) noexcept = delete;
-    auto operator=(Node const& other) -> Node& = delete;
-    auto operator=(Node && other) noexcept -> Node& = delete;
+    Node(Node const&) = delete;
+    Node(Node &&) noexcept = delete;
+    auto operator=(Node const&) -> Node& = delete;
+    auto operator=(Node &&) noexcept -> Node& = delete;
     [[nodiscard]] auto references() const noexcept -> std::uint32_t; 
 
     void acquire();

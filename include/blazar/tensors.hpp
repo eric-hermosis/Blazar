@@ -3,6 +3,7 @@
 
 #include <blazar/variables.hpp>
 #include <blazar/storage.hpp>
+#include <blazar/graph.hpp>
 
 namespace blazar {
   
@@ -16,7 +17,7 @@ public:
     }
 
 private:
-    mutable Storage storage_; 
+    mutable Storage storage_;  
 };
 
 };

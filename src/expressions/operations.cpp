@@ -23,7 +23,7 @@ Addition::operator Symbol() const {
 Division::operator Symbol() const {
     static symbol_t symbol {
         .kind = OPERATION,
-        .name = "Negation"
+        .name = "Division"
     };
     return Symbol(reinterpret_cast<std::uintptr_t>(&symbol));
 }

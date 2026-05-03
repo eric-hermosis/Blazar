@@ -72,22 +72,23 @@ public:
     :   size_(sizeof...(Sizes)) 
     {
         static_assert(sizeof...(Sizes) <= limit, "Shape rank exceeds limit.");
-        size_type dimension = 0;
-        (([&] {
-            if constexpr (std::is_signed_v<Sizes>) {
-                if (sizes < -1) {
+        
+        size_type dimension = 0; 
+
+        template for (auto size : std::tuple{sizes...}) {
+            if constexpr (std::is_signed_v<decltype(size)>) {
+                if (size < -1) {
                     throw Exception(
                         "Invalid size for dimension " + std::to_string(dimension) +
-                        ": " + std::to_string(sizes) +
+                        ": " + std::to_string(size) +
                         ". Size must be >= -1."
                     );
                 }
-            }
-
-            sizes_[dimension++] = static_cast<size_type>(sizes);
-        }()), ...);
+            } 
+            sizes_[dimension++] = static_cast<size_type>(size);
+        }
     }
-    
+        
     template<Iterable Sizes>
     constexpr Shape(Sizes&& sizes) {
         size_type dimension = 0;

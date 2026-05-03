@@ -1,13 +1,9 @@
-#include <blazar/core/graph.h>
+#include <iostream>
+#include <string_view> 
+#include <array>
+#include <tuple>
+#include <complex> 
 
-#include <cstddef>
-#include <cstdint>
-
-#include <stack>
-#include <deque>
-#include <vector> 
-
-
-int main() {
-    
+int main() { 
+    return 0;
 }

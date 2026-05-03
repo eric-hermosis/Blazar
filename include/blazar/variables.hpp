@@ -1,15 +1,15 @@
-#ifndef VARIABLE_HPP
-#define VARIABLE_HPP
+#ifndef VARIABLE_HPP_0x45524943 
+#define VARIABLE_HPP_0x45524943 
 
-#include "blazar/types.hpp"
-#include "blazar/shape.hpp"
-#include "blazar/strides.hpp"
+#include <blazar/types.hpp>
+#include <blazar/shape.hpp>
+#include <blazar/strides.hpp> 
+#include <blazar/graph.hpp>
 
 namespace blazar {
 
 class Variable {
-public: 
-
+public:   
     constexpr Variable()
     :   type_(unknown)
     ,   size_(0)
@@ -88,6 +88,8 @@ public:
     [[nodiscard]] constexpr auto bytes() const -> std::size_t {
         return size() * type_.size();
     }  
+
+    void acquire() const;
      
 private:
     Type type_;    
@@ -96,6 +98,7 @@ private:
     size_type size_;   
     rank_type rank_; 
     index_type offset_;  
+    mutable Vertex vertex_;
 }; 
 
 }

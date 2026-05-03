@@ -13,6 +13,10 @@ static struct {
     std::stack<void*, std::vector<void*>> free;
 } pool;
 
+auto Node::allocate(Symbol const& symbol, int arity) -> Node* {
+    return new Node(symbol, arity);
+}
+
 auto Node::operator new(std::size_t) -> void* {
     if (pool.free.empty()) {
         pool.storage.emplace();

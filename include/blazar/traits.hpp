@@ -18,6 +18,7 @@
 #include <cstddef>
 #include <string_view> 
 #include <complex>
+#include <tuple> 
 #include "core/types.h"
 
 namespace blazar::traits {
@@ -131,6 +132,6 @@ table[TYPES] = {
     [unknown] = {
         .name = "unknown" 
     },
-};
+}; 
 
 }
