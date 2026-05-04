@@ -20,14 +20,13 @@
 
 #include <cstdint>
 #include <cstddef>
-#include <memory>
+#include <memory> 
+#include <blazar/symbols.hpp>
 #include <blazar/resources.hpp>
 #include <blazar/core/graph.h>
 
 namespace blazar {
-
-class Symbol;
-
+  
 class Node {      
 public:  
     static auto allocate(Symbol const& symbol, int arity) -> Node*; 

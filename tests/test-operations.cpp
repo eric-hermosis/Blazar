@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <blazar/variables.hpp>
-#include <blazar/expressions/operations.hpp> 
+#include <blazar/operations.hpp> 
 
 using namespace blazar;
 

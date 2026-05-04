@@ -57,22 +57,19 @@ public:
     }
 
     template<typename T>
-    [[nodiscard]] static constexpr auto of(T) noexcept -> Type {  
-        if constexpr (std::is_same_v<T, bool>) return boolean;
-        else if constexpr (std::is_same_v<T, uint8_t>)  return uint8;
-        else if constexpr (std::is_same_v<T, uint16_t>) return uint16;
-        else if constexpr (std::is_same_v<T, uint32_t>) return uint32;
-        else if constexpr (std::is_same_v<T, uint64_t>) return uint64;
-        else if constexpr (std::is_same_v<T, int8_t>)   return int8;
-        else if constexpr (std::is_same_v<T, int16_t>)  return int16;
-        else if constexpr (std::is_same_v<T, int32_t>)  return int32;
-        else if constexpr (std::is_same_v<T, int64_t>)  return int64;
-        else if constexpr (std::is_same_v<T, float>)    return float32;
-        else if constexpr (std::is_same_v<T, double>)   return float64;
-        else if constexpr (std::is_same_v<T, std::complex<float>>)  return complex64;
-        else if constexpr (std::is_same_v<T, std::complex<double>>) return complex128;
-        else if constexpr (std::is_class_v<T>) return object; 
-        else return unknown;
+    [[nodiscard]] static constexpr auto of(T) noexcept -> Type {    
+        
+        template for (constexpr auto pair : traits::types) { 
+            if constexpr (std::is_same_v<T, decltype(pair.second)>) {
+                return pair.first;
+            }
+        }
+
+        if constexpr (std::is_class_v<T>) {
+            return object; 
+        }
+ 
+        return unknown; 
     }
 
 private:

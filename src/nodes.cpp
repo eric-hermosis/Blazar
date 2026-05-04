@@ -2,8 +2,7 @@
 #include <deque>
 #include <vector>
 #include <cassert>
-#include <blazar/nodes.hpp>
-#include <blazar/symbols.hpp>
+#include <blazar/nodes.hpp>  
 
 namespace blazar {
 
@@ -16,7 +15,7 @@ static struct {
 auto Node::allocate(Symbol const& symbol, int arity) -> Node* {
     return new Node(symbol, arity);
 }
-
+ 
 auto Node::operator new(std::size_t) -> void* {
     if (pool.free.empty()) {
         pool.storage.emplace();
@@ -35,9 +34,9 @@ void Node::operator delete(void* address, std::size_t) noexcept {
 Node::Node(Symbol const& symbol, int arity) 
 :   references_(1)
 ,   body_ {
-        .arity   = arity,
-        .sources = nullptr,
-        .symbol  = reinterpret_cast<symbol_t*>(symbol.id())
+        .arity   = arity, 
+        .symbol = {.name = symbol.name().data() },
+        .sources = nullptr
 } {} 
 
 void Node::acquire() {

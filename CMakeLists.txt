@@ -9,10 +9,10 @@ file(GLOB SOURCES
     "src/*.cpp" 
 )
  
-add_library(Blazar STATIC ${SOURCES}) 
+add_compile_options(-freflection)
+add_library(Blazar STATIC ${SOURCES})  
 
-target_include_directories(Blazar PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
+target_include_directories(Blazar PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include) 
 set_target_properties(Blazar PROPERTIES
     CXX_STANDARD 26
     CXX_STANDARD_REQUIRED ON 
@@ -22,7 +22,7 @@ option(BUILD_TESTS "Build tests" ON)
 option(BUILD_MAIN "Build main executable" OFF) 
 
 if(BUILD_TESTS)
-    add_subdirectory(tests)
+    add_subdirectory(tests)  
 endif()
  
 if(BUILD_MAIN)
@@ -35,4 +35,5 @@ if(BUILD_MAIN)
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
     )
+    target_compile_options(main PRIVATE -freflection)
 endif()

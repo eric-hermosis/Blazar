@@ -1,5 +1,5 @@
-#ifndef VARIABLE_HPP_0x45524943 
-#define VARIABLE_HPP_0x45524943 
+#ifndef VARIABLES_HPP_0x45524943 
+#define VARIABLES_HPP_0x45524943 
 
 #include <blazar/types.hpp>
 #include <blazar/shape.hpp>
@@ -88,9 +88,7 @@ public:
     [[nodiscard]] constexpr auto bytes() const -> std::size_t {
         return size() * type_.size();
     }  
-
-    void acquire() const;
-     
+ 
 private:
     Type type_;    
     Shape shape_;

@@ -33,9 +33,28 @@ class Strides {
 public:  
     static constexpr uint8_t limit = 8;    
 
-    constexpr Strides() noexcept = default; 
-  
+    constexpr Strides() noexcept = default;  
 
+    template<Integral... Sizes>
+    constexpr Strides(Sizes... sizes) 
+    :   size_(sizeof...(Sizes)) 
+    {
+        static_assert(sizeof...(Sizes) <= limit, "Strides rank exceeds limit.");
+        size_type dimension = 0;  
+        template for (auto size : std::tuple{sizes...}) {
+            if constexpr (std::is_signed_v<decltype(size)>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
+            } 
+            sizes_[dimension++] = static_cast<size_type>(size);
+        }
+    }
+    
     template<Integral Size>
     constexpr Strides(std::initializer_list<Size> shape)
     {
@@ -66,27 +85,7 @@ public:
             sizes_[dimension++] = static_cast<size_type>(size);
         }
     }
-
-    template<Integral... Sizes>
-    constexpr Strides(Sizes... sizes) 
-    :   size_(sizeof...(Sizes)) 
-    {
-        static_assert(sizeof...(Sizes) <= limit, "Strides rank exceeds limit.");
-        size_type dimension = 0;  
-        template for (auto size : std::tuple{sizes...}) {
-            if constexpr (std::is_signed_v<decltype(size)>) {
-                if (size < -1) {
-                    throw Exception(
-                        "Invalid size for dimension " + std::to_string(dimension) +
-                        ": " + std::to_string(size) +
-                        ". Size must be >= -1."
-                    );
-                }
-            } 
-            sizes_[dimension++] = static_cast<size_type>(size);
-        }
-    }
-    
+ 
     template<Iterator Iterator>
     constexpr Strides(Iterator begin, Iterator end)
     {

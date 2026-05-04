@@ -35,10 +35,28 @@ public:
     static constexpr uint8_t limit = 8;    
     
     constexpr Shape() noexcept = default;
+ 
+    template<Integral... Sizes>
+    constexpr Shape(Sizes... sizes)
+    :   size_(sizeof...(Sizes)) {
+        static_assert(sizeof...(Sizes) <= limit, "Shape rank exceeds limit."); 
+        size_type dimension = 0;  
+        template for (auto size : std::tuple{sizes...}) {
+            if constexpr (std::is_signed_v<decltype(size)>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
+            } 
+            sizes_[dimension++] = static_cast<size_type>(size);
+        }
+    }
 
     template<Integral Size>
-    constexpr Shape(std::initializer_list<Size> shape)
-    {
+    constexpr Shape(std::initializer_list<Size> shape) {
         const auto dimensions = shape.size();
 
         if (dimensions > limit) {
@@ -65,29 +83,7 @@ public:
 
             sizes_[dimension++] = static_cast<size_type>(size);
         }
-    }
-
-    template<Integral... Sizes>
-    constexpr Shape(Sizes... sizes)
-    :   size_(sizeof...(Sizes)) 
-    {
-        static_assert(sizeof...(Sizes) <= limit, "Shape rank exceeds limit.");
-        
-        size_type dimension = 0; 
-
-        template for (auto size : std::tuple{sizes...}) {
-            if constexpr (std::is_signed_v<decltype(size)>) {
-                if (size < -1) {
-                    throw Exception(
-                        "Invalid size for dimension " + std::to_string(dimension) +
-                        ": " + std::to_string(size) +
-                        ". Size must be >= -1."
-                    );
-                }
-            } 
-            sizes_[dimension++] = static_cast<size_type>(size);
-        }
-    }
+    } 
         
     template<Iterable Sizes>
     constexpr Shape(Sizes&& sizes) {
@@ -118,8 +114,7 @@ public:
 
 
     template<Iterator Iterator>
-    constexpr Shape(Iterator begin, Iterator end)
-    {
+    constexpr Shape(Iterator begin, Iterator end) {
         size_type dimension = 0;
 
         for (Iterator iterator = begin; iterator != end; ++iterator) {

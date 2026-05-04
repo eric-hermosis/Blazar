@@ -16,27 +16,16 @@
 //
 #ifndef GRAPH_H_0x45524943
 #define GRAPH_H_0x45524943
-#define ARITY_0x45524943 4 
- 
-enum symbol {
-    VARIABLE,
-    VIEW,
-    OPERATION, 
-    FUNCTION,
-    TRANSFORMATION,
-    REDUCTION,
-    COMPARISON
-};    
+#define ARITY_0x45524943 4  
 
-struct symbol_t {
-    enum symbol kind;
+struct symbol_t { 
     const char* name;
 };
    
 struct node_t {        
     int arity;  
-    struct node_t* sources[ARITY_0x45524943];    
-    struct symbol_t* symbol; 
+    struct symbol_t symbol;  
+    struct node_t* sources[ARITY_0x45524943];     
 }; 
 
 #endif // GRAPH_HP_0x45524943

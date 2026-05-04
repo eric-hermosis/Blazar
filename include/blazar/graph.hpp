@@ -17,6 +17,7 @@
 
 #ifndef GRAPH_HPP_0x45524943 
 #define GRAPH_HPP_0x45524943 
+
 #include <blazar/symbols.hpp>
 
 namespace blazar {

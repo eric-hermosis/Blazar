@@ -18,15 +18,16 @@
 #include <cstddef>
 #include <string_view> 
 #include <complex>
-#include <tuple> 
+#include <tuple>  
+#include <meta>
 #include "core/types.h"
 
-namespace blazar::traits {
+namespace blazar::traits {  
 
 constexpr struct {
     std::string_view name;
     std::size_t      size; 
-    std::uint8_t     bits; 
+    std::uint8_t     bits;  
 }   
 
 table[TYPES] = {
@@ -133,5 +134,24 @@ table[TYPES] = {
         .name = "unknown" 
     },
 }; 
+
+constexpr auto types = std::tuple{
+    std::pair{boolean, bool{}},
+    std::pair{uint8,  std::uint8_t{}},
+    std::pair{uint16, std::uint16_t{}},
+    std::pair{uint32, std::uint32_t{}},
+    std::pair{uint64, std::uint64_t{}}, 
+
+    std::pair{int8,  std::int8_t {}},
+    std::pair{int16, std::int16_t{}},
+    std::pair{int32, std::int32_t{}},
+    std::pair{int64, std::int64_t{}}, 
+
+    std::pair{float32, float{}},
+    std::pair{float64, double{}},
+     
+    std::pair{complex64,  std::complex<float>{}},
+    std::pair{complex128, std::complex<double>{}}
+};
 
 }
