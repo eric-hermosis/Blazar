@@ -19,9 +19,10 @@
  
 #include <type_traits>
 #include <tuple>
+#include <ranges>
 #include <blazar/types.hpp>
 #include <blazar/shape.hpp>
-#include <blazar/strides.hpp>
+#include <blazar/strides.hpp>   
 
 namespace blazar::expressions {
  
@@ -31,16 +32,16 @@ public:
     using type = typename std::decay<Expression>::type;
 };
 
-template<class Primitive, class ... Expressions>
-class Expression {
+template<class Symbol, class ... Expressions>
+class Expression { 
 public:
-    Primitive primitive;
-    std::tuple<typename Trait<Expressions>::type ...> sources;
+    Symbol symbol;
+    std::tuple<typename Trait<Expressions>::type ...> sources;  
 
-    constexpr Expression(Primitive primitive, Expressions const& ... sources) 
-    :   primitive(primitive)
+    constexpr Expression(Symbol symbol, Expressions const& ... sources) 
+    :   symbol(symbol)
     ,   sources(sources...)
-    {}
+    {}     
 };
  
 template<class Operation, class... Operands>
@@ -109,6 +110,10 @@ public:
     [[nodiscard]] constexpr auto size() const -> size_type {
         return size_;
     }
+
+    [[nodiscard]] constexpr auto size(index_type index) const -> size_type {
+        return shape_[index];
+    } 
     
     [[nodiscard]] constexpr auto rank() const -> rank_type {
         return rank_;
@@ -118,6 +123,10 @@ public:
         return size() * type_.size();
     }  
 
+    [[nodiscard]] constexpr auto offset() const -> index_type {
+        return 0;
+    }  
+
 private:
     Type      type_;    
     Shape     shape_;
@@ -125,9 +134,7 @@ private:
     size_type size_;   
     rank_type rank_; 
 };
-
-
-
+ 
 }
 
 #endif

@@ -13,25 +13,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-#ifndef GRAPH_H_0x45524943
-#define GRAPH_H_0x45524943
-#define ARITY_0x45524943 4  
+// 
 
-#include <cstdint>
+#ifndef GRAPH_HPP_0x45524943 
+#define GRAPH_HPP_0x45524943 
 
-struct symbol_t { 
-    const char* name;
+#include <iosfwd>
+#include <blazar/graph/vertices.hpp>
+
+namespace blazar {
+
+class Graph {  
+public:
+
+    Graph() = default;
+
+    template<class Expression>
+    Graph(Expression const& expression) {
+        head_ = expression.forward();
+    } 
+    
+    Vertex head_;
 };
-   
-struct node_t {        
-    uint8_t arity;  
-    struct symbol_t symbol;  
-    struct node_t* sources[ARITY_0x45524943];     
-}; 
 
-struct graph_t {
-    struct node_t* head;
-};
+}
 
-#endif // GRAPH_HP_0x45524943
+#endif

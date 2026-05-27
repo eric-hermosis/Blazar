@@ -2,7 +2,7 @@
 #include <deque>
 #include <vector>
 #include <cassert>
-#include <blazar/nodes.hpp>  
+#include <blazar/graph/nodes.hpp>
 
 namespace blazar {
 
@@ -12,8 +12,8 @@ static struct {
     std::stack<void*, std::vector<void*>> free;
 } pool;
 
-auto Node::allocate(Symbol const& symbol, int arity) -> Node* {
-    return new Node(symbol, arity);
+auto Node::allocate(Symbol const& symbol) -> Node* {
+    return new Node(symbol);
 }
  
 auto Node::operator new(std::size_t) -> void* {
@@ -31,12 +31,11 @@ void Node::operator delete(void* address, std::size_t) noexcept {
     pool.free.push(address);
 }
 
-Node::Node(Symbol const& symbol, int arity) 
+Node::Node(Symbol const& symbol) 
 :   references_(1)
 ,   body_ {
-        .arity   = arity, 
-        .symbol = {.name = symbol.name().data() },
-        .sources = nullptr
+        .arity  = 0, 
+        .symbol = {.name = symbol.name().data() }
 } {} 
 
 void Node::acquire() {
@@ -50,6 +49,10 @@ void Node::release() {
     }
 } 
     
+void Node::link(Node* source) {
+    body_.sources[body_.arity++] = &source->body_;
+}
+
 auto Node::references() const noexcept -> std::uint32_t {
     return references_;
 }

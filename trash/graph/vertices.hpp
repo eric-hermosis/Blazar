@@ -15,18 +15,19 @@
 // limitations under the License.
 //
 
-#ifndef GRAPH_HPP_0x45524943 
-#define GRAPH_HPP_0x45524943 
+#ifndef VERTICES_HPP_0x45524943 
+#define VERTICES_HPP_0x45524943  
 
-#include <blazar/symbols.hpp>
+#include <cstdint>
+#include <blazar/symbols.hpp> 
 
 namespace blazar {
-
-class Node;
+ 
+class Node; 
 
 class Vertex {
-public:
-
+public: 
+    
     constexpr Vertex() = default; 
     
     constexpr Vertex(Vertex const& other) { 
@@ -59,17 +60,18 @@ public:
         if !consteval { 
             release(); 
         }
-    }    
+    }      
 
-    Vertex(Symbol const&, int arity);
-
+    Vertex(Symbol const& symbol); 
+    operator bool() const noexcept; 
     void release();
     void copy(Vertex const&);
     void move(Vertex &) noexcept;
+    auto node() const noexcept -> Node*;
 
 private:
     Node* node_ = nullptr;
-};
+}; 
 
 }
 

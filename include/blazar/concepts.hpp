@@ -30,8 +30,13 @@ template <typename Type>
 concept Iterator = std::input_iterator<Type>;  
 
 template<typename Type>
-concept Integral = std::integral<Type>;
-    
+concept Integral = std::integral<Type>; 
+
+template<typename Type>
+concept Composable = requires(Type const& type) {
+    type.symbol;
+};
+
 } // namespace blazar
 
 #endif // CONCEPTS_HPP_0x45524943

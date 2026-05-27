@@ -1,36 +1,19 @@
-#include <iostream>
-#include <string_view>
-#include <meta>
-#include <cstddef>
-#include <tuple>
-#include <utility>
-#include <cstdint>
-#include <complex>
-#include <stdfloat>
-#include <meta>
-#include <tuple>
-#include <utility>
-#include <blazar/exceptions.hpp>
- 
+#include <blazar/variables.hpp>
+#include <blazar/operations.hpp>
+
 using namespace blazar;
 
-constexpr auto divide(int a, int b) -> int {
-    if (b == 0) {
-        throw Exception("Division by zero!");
-    }
-    return a / b;
+constexpr bool test() {
+    Variable a(float64, {2,2});
+    Variable b(float32, {2,3,4});
+    a = b + b * b;
+    return a.rank() == 3 && a.size() == 24;
 }
 
-int main() { 
-    static_assert([] {
-        try {
-            divide(10, 0);
-        } catch (const Exception& e) {
-            return true; 
-        }
-        return false;
-    }());
+static_assert(test());
+  
+#include <iostream>
 
-    std::cout << "Compile-time exception validation passed!" << std::endl;
-    return 0;
-} 
+int main() {
+    std::cout << test() << std::endl;
+}

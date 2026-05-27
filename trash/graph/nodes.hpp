@@ -29,21 +29,23 @@ namespace blazar {
   
 class Node {      
 public:  
-    static auto allocate(Symbol const& symbol, int arity) -> Node*; 
-    auto operator new(std::size_t) -> void*;
-    void operator delete(void*, std::size_t) noexcept;    
-    Node(Symbol const&, int); 
+    static auto allocate(Symbol const& symbol) -> Node*; 
+    auto operator new(std::size_t size) -> void*;
+    void operator delete(void* address, std::size_t size) noexcept;    
+    Node(Symbol const& symbol); 
     ~Node() = default;
-    Node(Node const&) = delete;
-    Node(Node &&) noexcept = delete;
-    auto operator=(Node const&) -> Node& = delete;
-    auto operator=(Node &&) noexcept -> Node& = delete;
+    Node(Node const& other) = delete;
+    Node(Node && other) noexcept = delete;
+    auto operator=(Node const& other) -> Node& = delete;
+    auto operator=(Node && other) noexcept -> Node& = delete;
     [[nodiscard]] auto references() const noexcept -> std::uint32_t; 
 
     void acquire();
     void release();  
- 
-private:
+    void link(Node* source); 
+     
+
+public:
     std::uint32_t references_; 
     node_t body_; 
 };

@@ -1,9 +1,11 @@
 #include <iostream>
 #include <blazar/core/types.h>
 #include <blazar/core/layout.h>
+#include <blazar/core/graph.h>
 #include <blazar/types.hpp>
 #include <blazar/shape.hpp>
-#include <blazar/strides.hpp>
+#include <blazar/strides.hpp>  
+#include <unordered_set>
 
 namespace blazar::io {
 
@@ -36,7 +38,7 @@ void print(std::ostream& stream, const strides_t& strides, rank_type dimensions,
         }
     }
     stream << ")"; 
-}  
+}   
 
 } namespace blazar {
 
@@ -45,18 +47,18 @@ auto operator<<(std::ostream& stream, Type type) -> std::ostream&{
     return stream;
 }
 
-auto operator<<(std::ostream& ostream, Shape const& shape) -> std::ostream&{
+auto operator<<(std::ostream& stream, Shape const& shape) -> std::ostream&{
     shape_t printable { .address = shape.address() };
-    ostream << "Shape"; 
-    io::print(ostream, printable, shape.size(), true);
-    return ostream;
+    stream << "Shape"; 
+    io::print(stream, printable, shape.size(), true);
+    return stream;
 } 
 
-auto operator<<(std::ostream& ostream, Strides const& strides) -> std::ostream& {
+auto operator<<(std::ostream& stream, Strides const& strides) -> std::ostream& {
     strides_t printable { .address = strides.address() };
-    ostream << "Strides"; 
-    io::print(ostream, printable, strides.size(), true);
-    return ostream;
+    stream << "Strides"; 
+    io::print(stream, printable, strides.size(), true);
+    return stream;
 } 
 
 }

@@ -4,12 +4,13 @@
 #include <blazar/types.hpp>
 #include <blazar/shape.hpp>
 #include <blazar/strides.hpp> 
-#include <blazar/graph.hpp>
+#include <blazar/concepts.hpp>
 
-namespace blazar {
-
+namespace blazar { 
+  
 class Variable {
-public:   
+public:    
+
     constexpr Variable()
     :   type_(unknown)
     ,   size_(0)
@@ -53,6 +54,47 @@ public:
         } 
     }       
 
+    template<Composable Expression>
+    constexpr Variable(Expression const& expression)
+    :   type_(expression.type())
+    ,   size_(expression.size())
+    ,   rank_(expression.rank())
+    ,   offset_(expression.offset())
+    ,   shape_(expression.shape())
+    ,   strides_(expression.strides()) {}
+
+    template<Composable Expression>
+    constexpr Variable(Expression&& expression)
+    : type_(std::forward<Expression>(expression).type())
+    , size_(std::forward<Expression>(expression).size())
+    , rank_(std::forward<Expression>(expression).rank())
+    , offset_(std::forward<Expression>(expression).offset())
+    , shape_(std::forward<Expression>(expression).shape())
+    , strides_(std::forward<Expression>(expression).strides())
+    {}
+
+    template<Composable Expression>
+    constexpr auto operator=(Expression const& expression) -> Variable &{
+        type_ = expression.type();
+        size_ = expression.size();
+        rank_ = expression.rank();
+        offset_ = expression.offset();
+        shape_ = expression.shape();
+        strides_ = expression.strides();
+        return *this;
+    }
+     
+    template<Composable Expression>
+    constexpr auto operator=(Expression&& expression) -> Variable& {
+        type_ = std::forward<Expression>(expression).type();
+        size_ = std::forward<Expression>(expression).size();
+        rank_ = std::forward<Expression>(expression).rank();
+        offset_ = std::forward<Expression>(expression).offset();
+        shape_ = std::forward<Expression>(expression).shape();
+        strides_ = std::forward<Expression>(expression).strides();
+        return *this;
+    }
+
     [[nodiscard]] constexpr auto type() const noexcept -> Type const &{
         return type_;
     }
@@ -87,16 +129,15 @@ public:
   
     [[nodiscard]] constexpr auto bytes() const -> std::size_t {
         return size() * type_.size();
-    }  
- 
+    }       
+
 private:
     Type type_;    
     Shape shape_;
     Strides strides_;     
     size_type size_;   
     rank_type rank_; 
-    index_type offset_;  
-    mutable Vertex vertex_;
+    index_type offset_;   
 }; 
 
 }
