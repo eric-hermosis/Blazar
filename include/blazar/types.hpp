@@ -14,6 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #ifndef TYPE_HPP_0x45524943
 #define TYPE_HPP_0x45524943 
 
@@ -21,10 +22,143 @@
 #include <cstdint>
 #include <cstddef>
 #include <string_view> 
-#include <complex> 
-#include <blazar/traits.hpp>
+#include <complex>  
+#include <tuple>  
+#include <blazar/core/types.h>
 
-namespace blazar {
+namespace blazar::types {  
+
+constexpr auto pairs = std::tuple{
+    std::pair{boolean, bool{}},
+    std::pair{uint8,  std::uint8_t{}},
+    std::pair{uint16, std::uint16_t{}},
+    std::pair{uint32, std::uint32_t{}},
+    std::pair{uint64, std::uint64_t{}}, 
+
+    std::pair{int8,  std::int8_t {}},
+    std::pair{int16, std::int16_t{}},
+    std::pair{int32, std::int32_t{}},
+    std::pair{int64, std::int64_t{}}, 
+
+    std::pair{float32, float{}},
+    std::pair{float64, double{}},
+     
+    std::pair{complex64,  std::complex<float>{}},
+    std::pair{complex128, std::complex<double>{}}
+};
+
+constexpr struct {
+    std::string_view name;
+    std::size_t      size; 
+    std::uint8_t     bits;  
+}   
+
+traits[TYPES] = {
+
+    [boolean] = {
+        .name = "boolean",
+        .size = sizeof(std::uint8_t),
+        .bits = 8,
+    },
+
+    [uint8] = {
+        .name = "uint8",
+        .size = sizeof(std::uint8_t),
+        .bits = 8,
+    },
+
+    [uint16] = {
+        .name = "uint16",
+        .size = sizeof(std::uint16_t),
+        .bits = 16,
+    },
+
+    [uint32] = {
+        .name = "uint32",
+        .size = sizeof(std::uint32_t),
+        .bits = 32,
+    },
+
+    [uint64] = {
+        .name = "uint64",
+        .size = sizeof(std::uint64_t),
+        .bits = 64,
+    },
+
+    [int8] = {
+        .name = "int8",
+        .size = sizeof(std::int8_t),
+        .bits = 8,
+    },
+
+    [int16] = {
+        .name = "int16",
+        .size = sizeof(std::int16_t),
+        .bits = 16,
+    },
+
+    [int32] = {
+        .name = "int32",
+        .size = sizeof(std::int32_t),
+        .bits = 32,
+    },
+
+    [int64] = {
+        .name = "int64",
+        .size = sizeof(std::int64_t),
+        .bits = 64,
+    },
+
+    [float16] = {
+        .name = "float16",
+        .size = 2,
+        .bits = 16,
+    },
+
+    [bfloat16] = {
+        .name = "bfloat16",
+        .size = 2,
+        .bits = 16,
+    },
+
+    [float32] = {
+        .name = "float32",
+        .size = sizeof(float),
+        .bits = 32,
+    },
+
+    [float64] = {
+        .name = "float64",
+        .size = sizeof(double),
+        .bits = 64,
+    },
+
+    [complex64] = {
+        .name = "complex64",
+        .size = 2 * sizeof(float),
+        .bits = 64,
+    },
+
+    [complex128] = {
+        .name = "complex128",
+        .size = 2 * sizeof(double),
+        .bits = 128,
+    },
+
+    [any] = {
+        .name = "any"
+    },
+
+    [object] = {
+        .name = "object" 
+    },
+
+    [unknown] = {
+        .name = "unknown" 
+    },
+}; 
+ 
+} namespace blazar {
 
 class Type {
     
@@ -45,21 +179,21 @@ public:
     }
 
     [[nodiscard]] constexpr auto name() const noexcept ->  std::string_view  {
-        return traits::table[type_].name;
+        return types::traits[type_].name;
     }
 
     [[nodiscard]] constexpr auto size() const noexcept -> std::size_t {
-        return traits::table[type_].size;
+        return types::traits[type_].size;
     }
 
     [[nodiscard]] constexpr auto bits() const noexcept -> std::uint8_t  {
-        return traits::table[type_].bits;
+        return types::traits[type_].bits;
     }
 
     template<typename T>
     [[nodiscard]] static constexpr auto of(T) noexcept -> Type {    
         
-        template for (constexpr auto pair : traits::types) { 
+        template for (constexpr auto pair : types::pairs) { 
             if constexpr (std::is_same_v<T, decltype(pair.second)>) {
                 return pair.first;
             }

@@ -54,44 +54,42 @@ public:
         } 
     }       
 
-    template<Composable Expression>
-    constexpr Variable(Expression const& expression)
-    :   type_(expression.type())
-    ,   size_(expression.size())
-    ,   rank_(expression.rank())
-    ,   offset_(expression.offset())
-    ,   shape_(expression.shape())
+    constexpr Variable(Type type, size_type size, rank_type rank, index_type offset, Shape shape, Strides strides)
+    :   type_(type) 
+    ,   size_(size)
+    ,   rank_(rank)
+    ,   offset_(offset)
+    ,   shape_(std::move(shape))
+    ,   strides_(std::move(strides)) {} 
+
+    template<Composable Expression> 
+    constexpr Variable(Expression const& expression) 
+    :   type_(expression.type()) 
+    ,   size_(expression.size()) 
+    ,   rank_(expression.rank()) 
+    ,   offset_(expression.offset()) 
+    ,   shape_(expression.shape()) 
     ,   strides_(expression.strides()) {}
+ 
+    template<Composable Expression> 
+    constexpr Variable(Expression&& expression) 
+    :   type_(std::forward<Expression>(expression).type()) 
+    ,   size_(std::forward<Expression>(expression).size()) 
+    ,   rank_(std::forward<Expression>(expression).rank()) 
+    ,   offset_(std::forward<Expression>(expression).offset()) 
+    ,   shape_(std::forward<Expression>(expression).shape()) 
+    ,   strides_(std::forward<Expression>(expression).strides()) 
+    {} 
 
     template<Composable Expression>
-    constexpr Variable(Expression&& expression)
-    : type_(std::forward<Expression>(expression).type())
-    , size_(std::forward<Expression>(expression).size())
-    , rank_(std::forward<Expression>(expression).rank())
-    , offset_(std::forward<Expression>(expression).offset())
-    , shape_(std::forward<Expression>(expression).shape())
-    , strides_(std::forward<Expression>(expression).strides())
-    {}
-
-    template<Composable Expression>
-    constexpr auto operator=(Expression const& expression) -> Variable &{
-        type_ = expression.type();
-        size_ = expression.size();
-        rank_ = expression.rank();
-        offset_ = expression.offset();
-        shape_ = expression.shape();
-        strides_ = expression.strides();
+    constexpr auto operator=(Expression const& expression) -> Variable& { 
+        *this = Variable(expression);
         return *this;
     }
-     
+    
     template<Composable Expression>
     constexpr auto operator=(Expression&& expression) -> Variable& {
-        type_ = std::forward<Expression>(expression).type();
-        size_ = std::forward<Expression>(expression).size();
-        rank_ = std::forward<Expression>(expression).rank();
-        offset_ = std::forward<Expression>(expression).offset();
-        shape_ = std::forward<Expression>(expression).shape();
-        strides_ = std::forward<Expression>(expression).strides();
+        *this = Variable(std::forward<Expression>(expression));
         return *this;
     }
 
@@ -115,7 +113,7 @@ public:
         return strides_[dimension];
     }
 
-    [[nodiscard]] constexpr auto offset() const noexcept -> index_type{
+    [[nodiscard]] constexpr auto offset() const noexcept -> index_type {
         return offset_;
     } 
 
@@ -129,15 +127,15 @@ public:
   
     [[nodiscard]] constexpr auto bytes() const -> std::size_t {
         return size() * type_.size();
-    }       
+    }
 
-private:
-    Type type_;    
-    Shape shape_;
-    Strides strides_;     
-    size_type size_;   
+private: 
+    Type type_;     
     rank_type rank_; 
+    size_type size_;   
     index_type offset_;   
+    Shape shape_;
+    Strides strides_;       
 }; 
 
 }

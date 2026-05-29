@@ -21,17 +21,30 @@
 #include <concepts>
 #include <iterator>   
 
-namespace blazar::concepts {
-
-template<typename Type>
-concept Iterable = requires(Type type) { std::begin(type); std::end(type); };   
-
+namespace blazar {
+  
 template <typename Type>
 concept Iterator = std::input_iterator<Type>;  
 
 template<typename Type>
 concept Integral = std::integral<Type>; 
 
-}
+template<typename Type>
+concept Iterable = requires(Type type) { 
+    std::begin(type); 
+    std::end(type); 
+};   
 
-#endif  
+template<class Expression>
+concept Composable = requires(Expression expression) {
+    expression.type();
+    expression.size();
+    expression.rank();
+    expression.offset();
+    expression.shape();
+    expression.strides();
+};
+
+} // namespace blazar
+
+#endif // CONCEPTS_HPP_0x45524943

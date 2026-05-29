@@ -15,23 +15,25 @@
 // limitations under the License.
 // 
 
-#ifndef CONCEPTS_HPP_0x45524943 
-#define CONCEPTS_HPP_0x45524943  
+#ifndef DOMAINS_HPP_0x45524943 
+#define DOMAINS_HPP_0x45524943  
+ 
+#include <variant>   
 
-#include <concepts>
-#include <iterator>   
+namespace blazar {
 
-namespace blazar::concepts {
+class Host {
+public:
+    Host() = default; 
+};  
+   
+using Environment = std::variant<
+    std::monostate,
+    Host
+>;
 
-template<typename Type>
-concept Iterable = requires(Type type) { std::begin(type); std::end(type); };   
+Environment operator|(Environment const&, Environment const&);
 
-template <typename Type>
-concept Iterator = std::input_iterator<Type>;  
+} 
 
-template<typename Type>
-concept Integral = std::integral<Type>; 
-
-}
-
-#endif  
+#endif

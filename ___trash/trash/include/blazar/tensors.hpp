@@ -3,7 +3,6 @@
 
 #include <blazar/variables.hpp>
 #include <blazar/storage.hpp>
-#include <blazar/graph.hpp>
 
 namespace blazar {
   
@@ -11,7 +10,6 @@ class Tensor : public Variable {
 public:
     using Variable::Variable; 
  
-
     void initialize(Environment const& environment) const {
         storage_ = Storage(this->bytes(), environment);
     }

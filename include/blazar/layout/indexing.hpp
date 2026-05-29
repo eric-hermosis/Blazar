@@ -13,25 +13,29 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
 
-#ifndef CONCEPTS_HPP_0x45524943 
-#define CONCEPTS_HPP_0x45524943  
+#ifndef INDEXING_HPP_0x45524943 
+#define INDEXING_HPP_0x45524943 
+ 
+#include <cassert>  
+#include <blazar/core/types.h>
+#include <blazar/exceptions.hpp>
 
-#include <concepts>
-#include <iterator>   
+namespace blazar::indexing { 
+ 
+constexpr auto normalize(index_type index, size_type bound) -> index_type {
+    if (index < 0) {
+        index += bound;
+    }
 
-namespace blazar::concepts {
+    if (index < 0 || index > bound) {
+        throw Exception("Index out of bounds");
+    }
+    
+    return index;
+}  
+  
+} 
 
-template<typename Type>
-concept Iterable = requires(Type type) { std::begin(type); std::end(type); };   
-
-template <typename Type>
-concept Iterator = std::input_iterator<Type>;  
-
-template<typename Type>
-concept Integral = std::integral<Type>; 
-
-}
-
-#endif  
+#endif

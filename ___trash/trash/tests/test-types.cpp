@@ -107,5 +107,6 @@ TEST(TestTypes, ConstructFromCode) {
     EXPECT_EQ(std::string(Type(code_type(0x0340)).name()), "float64");
 
     EXPECT_EQ(Type(code_type(0xFFFF)).size(), 0);
-} 
+}
+ 
 */

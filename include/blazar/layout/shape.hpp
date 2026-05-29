@@ -13,33 +13,41 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
+// 
 
-#ifndef STRIDES_HPP_0x45524943 
-#define STRIDES_HPP_0x45524943 
+#ifndef SHAPE_HPP_0x45524943 
+#define SHAPE_HPP_0x45524943 
 
 #include <iosfwd>
-#include <array>  
-#include <initializer_list>
-
-#include "concepts.hpp"
-#include "shape.hpp" 
-#include "indexing.hpp"
-#include "exceptions.hpp" 
-
-namespace blazar {
+#include <array>
+#include <cstdint>
+#include <cassert>  
+#include <concepts>
+#include <iterator>   
+#include <initializer_list> 
  
-class Strides {
-public:  
+#include <blazar/concepts.hpp>  
+#include <blazar/exceptions.hpp>
+#include <blazar/layout/indexing.hpp> 
+#include <blazar/layout/slicing.hpp> 
+
+namespace blazar::layout { 
+    
+using concepts::Integral;
+using concepts::Iterable;
+using concepts::Iterator;
+
+class Shape {
+public: 
+
     static constexpr uint8_t limit = 8;    
-
-    constexpr Strides() noexcept = default;  
-
+    
+    constexpr Shape() noexcept = default;
+ 
     template<Integral... Sizes>
-    constexpr Strides(Sizes... sizes) 
-    :   size_(sizeof...(Sizes)) 
-    {
-        static_assert(sizeof...(Sizes) <= limit, "Strides rank exceeds limit.");
+    constexpr Shape(Sizes... sizes)
+    :   size_(sizeof...(Sizes)) {
+        static_assert(sizeof...(Sizes) <= limit, "Shape rank exceeds limit."); 
         size_type dimension = 0;  
         template for (auto size : std::tuple{sizes...}) {
             if constexpr (std::is_signed_v<decltype(size)>) {
@@ -54,15 +62,14 @@ public:
             sizes_[dimension++] = static_cast<size_type>(size);
         }
     }
-    
+
     template<Integral Size>
-    constexpr Strides(std::initializer_list<Size> shape)
-    {
+    constexpr Shape(std::initializer_list<Size> shape) {
         const auto dimensions = shape.size();
 
         if (dimensions > limit) {
             throw Exception(
-                "Strides rank " + std::to_string(dimensions) +
+                "Shape rank " + std::to_string(dimensions) +
                 " exceeds limit of " + std::to_string(limit)
             );
         }
@@ -84,11 +91,38 @@ public:
 
             sizes_[dimension++] = static_cast<size_type>(size);
         }
+    } 
+        
+    template<Iterable Sizes>
+    constexpr Shape(Sizes&& sizes) {
+        size_type dimension = 0;
+
+        for (auto size : sizes) {
+            if (dimension >= limit) {
+                throw Exception(
+                    "Shape rank exceeds limit of " + std::to_string(limit)
+                );
+            }
+
+            if constexpr (std::is_signed_v<std::decay_t<decltype(size)>>) {
+                if (size < -1) {
+                    throw Exception(
+                        "Invalid size for dimension " + std::to_string(dimension) +
+                        ": " + std::to_string(size) +
+                        ". Size must be >= -1."
+                    );
+                }
+            }
+
+            sizes_[dimension++] = static_cast<size_type>(size);
+        }
+
+        size_ = dimension;
     }
- 
+
+
     template<Iterator Iterator>
-    constexpr Strides(Iterator begin, Iterator end)
-    {
+    constexpr Shape(Iterator begin, Iterator end) {
         size_type dimension = 0;
 
         for (Iterator iterator = begin; iterator != end; ++iterator) {
@@ -109,70 +143,59 @@ public:
                     );
                 }
             }
+
             sizes_[dimension++] = static_cast<size_type>(size);
         }
+
         size_ = dimension;
     }
-    
-    constexpr Strides(const Shape& shape) noexcept
-    :   size_(shape.size()) 
-    {  
-        if (size_ == 0) {
-            return;
-        }
 
-        sizes_[size_ - 1] = 1;
-        for (int size = size_ - 2; size >= 0; --size) {
-            sizes_[size] = sizes_[size + 1] * shape[size + 1];
-        } 
-    }
- 
     [[nodiscard]] constexpr auto address() noexcept -> size_type* {
         return sizes_.data();
     }
 
-    [[nodiscard]] constexpr auto address() const noexcept -> size_type const* {
+    [[nodiscard]] constexpr auto address() const noexcept ->  size_type const* {
         return sizes_.data();
     }
-
-    [[nodiscard]] constexpr auto size() const noexcept { 
+    
+    [[nodiscard]] constexpr auto size() const noexcept -> rank_type { 
         return size_; 
-    } 
-
+    }
+    
     [[nodiscard]] constexpr auto begin() { 
         return sizes_.begin(); 
     }
-    
-    [[nodiscard]] constexpr auto end() {
+     
+    [[nodiscard]] constexpr auto end() { 
         return std::next(sizes_.begin(), size_);
     }
-
+ 
     [[nodiscard]] constexpr auto begin() const { 
         return sizes_.begin(); 
-    }
-    
+    }  
+
     [[nodiscard]] constexpr auto end() const { 
-        return std::next(sizes_.begin(), size_);
-    }
-    
+        return std::next(sizes_.begin(), size_); 
+    } 
+ 
     [[nodiscard]] constexpr auto cbegin() const { 
         return sizes_.cbegin(); 
     }
-    
+     
     [[nodiscard]] constexpr auto cend() const { 
-        return std::next(sizes_.cbegin(), size_);
+        return std::next(sizes_.cbegin(), size_); 
     }
-
+    
     [[nodiscard]] constexpr auto front() const { 
         if (size_ == 0) {
-            throw Exception("Cannot call front() on an empty Strides");
+            throw Exception("Cannot call front() on an empty Shape");
         }
         return sizes_.front(); 
     }
     
     [[nodiscard]] constexpr auto back() const { 
         if (size_ == 0) {
-            throw Exception("Cannot call back() on an empty Strides");  
+            throw Exception("Cannot call back() on an empty Shape");  
         }
         return sizes_[size_-1];
     }       
@@ -190,7 +213,7 @@ public:
     constexpr void append(size_type size) { 
         if (size_ + 1 > limit) {
             throw Exception(
-                "Strides dimensions " + std::to_string(size_) + 
+                "Shape dimensions " + std::to_string(size_) + 
                 " exceeds limit of " + std::to_string(limit)
             );
         }  
@@ -209,7 +232,7 @@ public:
     constexpr void resize(rank_type dimensions) {
         if (dimensions > limit) {
             throw Exception(
-                "Strides dimensions limit exceeded: rank is " + std::to_string(size_) +
+                "Shape dimensions limit exceeded: rank is " + std::to_string(size_) +
                 ", but the maximum allowed is " + std::to_string(limit)
             );
         }
@@ -219,13 +242,13 @@ public:
         }
         size_ = dimensions; 
     }
-    
-private:
-    rank_type size_{0};
-    std::array<size_type, limit> sizes_{};
-};
 
-constexpr auto operator==(Strides const& first, Strides const& second) -> bool {
+private:
+    rank_type size_{0};      
+    std::array<size_type, limit> sizes_{}; 
+};
+ 
+constexpr auto operator==(Shape const& first, Shape const& second) -> bool {
     if (first.size() != second.size()) {
         return false;
     }
@@ -236,10 +259,14 @@ constexpr auto operator==(Strides const& first, Strides const& second) -> bool {
         }
     }
     return true;
-} 
+}   
 
-auto operator<<(std::ostream&, Strides const& strides) -> std::ostream&;  
+auto operator<<(std::ostream&, Shape const& shape) -> std::ostream&;
 
-} // namespace blazar
+} namespace blazar {
 
-#endif // STRIDES_HPP_0x45524943 
+using layout::Shape;
+
+}
+
+#endif

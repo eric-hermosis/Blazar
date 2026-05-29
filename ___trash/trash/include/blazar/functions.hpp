@@ -20,7 +20,7 @@
 #include <blazar/types.hpp>
 #include <blazar/shape.hpp>
 #include <blazar/strides.hpp> 
-#include <blazar/expressions.hpp>
+#include <blazar/operations.hpp>
 
 namespace blazar::expressions {
 

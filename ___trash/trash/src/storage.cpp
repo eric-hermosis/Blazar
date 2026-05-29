@@ -1,6 +1,6 @@
+#include <blazar/storage.hpp>
+#include <blazar/memory.hpp>
 #include <blazar/exceptions.hpp>
-#include <blazar/resources/storage.hpp>
-#include <blazar/resources/memory.hpp>
 
 namespace blazar {
 

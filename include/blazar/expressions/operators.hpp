@@ -14,15 +14,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#ifndef EXPRESSIONS_HPP_0x45524943
-#define EXPRESSIONS_HPP_0x45524943
- 
+#ifndef OPERATORS_HPP_0x45524943
+#define OPERATORS_HPP_0x45524943
+    
 #include <type_traits>
-#include <tuple>
-#include <ranges>
+#include <tuple> 
 #include <blazar/types.hpp>
-#include <blazar/shape.hpp>
-#include <blazar/strides.hpp>   
+#include <blazar/layout/shape.hpp>
+#include <blazar/layout/strides.hpp>   
 
 namespace blazar::expressions {
  
@@ -31,22 +30,13 @@ class Trait {
 public:
     using type = typename std::decay<Expression>::type;
 };
-
-template<class Symbol, class ... Expressions>
-class Expression { 
-public:
-    Symbol symbol;
-    std::tuple<typename Trait<Expressions>::type ...> sources;  
-
-    constexpr Expression(Symbol symbol, Expressions const& ... sources) 
-    :   symbol(symbol)
-    ,   sources(sources...)
-    {}     
-};
  
 template<class Operation, class... Operands>
-class Operator : public Expression<Operation, Operands...> {
+class Operator {
 public: 
+    std::decay<Operation>::type symbol; 
+    std::tuple<typename Trait<Operands>::type ...> sources;  
+
     constexpr static auto promote(const Operands&... operands) -> Type {
         Type result = unknown;
         template for (auto const& operand : std::tuple{operands...}) {
@@ -58,7 +48,8 @@ public:
     }
 
     constexpr Operator(Operation operation, Operands const&... operands)
-    :   Expression<Operation, Operands...>(operation, operands...) 
+    :   symbol(operation)
+    ,   sources(operands...)
     ,   rank_(0)
     ,   size_(1)
     { 
@@ -135,6 +126,58 @@ private:
     rank_type rank_; 
 };
  
+} namespace blazar::operations {   
+ 
+struct Negation {};
+struct Addition {};
+struct Division {};
+struct Subtraction{}; 
+struct Multiplication {}; 
+struct Exponentiation {};
+
+} namespace blazar::operators {
+
+using namespace operations; 
+using namespace expressions;
+
+template<class Operand>
+constexpr auto operator-(Operand && operand) {
+    return Operator<Negation, Operand>({}, std::forward<Operand>(operand));
+}
+
+template<class Augend, class Addend>
+constexpr auto operator+(Augend && augend, Addend && addend) {
+    return Operator<Addition, Augend, Addend>({}, std::forward<Augend>(augend), std::forward<Addend>(addend));
+}
+
+template<class Dividend, class Divisor>
+constexpr auto operator/(Dividend && dividend, Divisor && divisor) {
+    return Operator<Division, Dividend, Divisor>({}, std::forward<Dividend>(dividend), std::forward<Divisor>(divisor));
+}
+
+template<class Minuend, class Subtrahend>
+constexpr auto operator-(Minuend && minuend, Subtrahend && subtrahend) {
+    return Operator<Subtraction, Minuend, Subtrahend>({}, std::forward<Minuend>(minuend), std::forward<Subtrahend>(subtrahend));
+}
+
+template<class Multiplicand, class Multiplier>
+constexpr auto operator*(Multiplicand && multiplicand, Multiplier && multiplier) {
+    return Operator<Multiplication, Multiplicand, Multiplier>({}, std::forward<Multiplicand>(multiplicand), std::forward<Multiplier>(multiplier));
+}
+
+template<class Base, class Exponent>
+constexpr auto operator^(Base && base, Exponent && exponent) {
+    return Operator<Exponentiation, Base, Exponent>({}, std::forward<Base>(base), std::forward<Exponent>(exponent));
+} 
+
+} namespace blazar {
+
+using operators::operator+;
+using operators::operator-;
+using operators::operator*;
+using operators::operator/;
+using operators::operator^;
+
 }
 
 #endif

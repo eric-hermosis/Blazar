@@ -13,25 +13,37 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
 
-#ifndef CONCEPTS_HPP_0x45524943 
-#define CONCEPTS_HPP_0x45524943  
+#ifndef MEMORY_H_0x45524943
+#define MEMORY_H_0x45524943 
 
-#include <concepts>
-#include <iterator>   
+#ifdef __cplusplus 
+#include <cstddef>    
+#else 
+#include <stddef.h> 
+#endif 
+  
+enum domain {
+    HOST,
+    DEVICE
+};  
+  
+struct allocator_t { 
+    const char* name;
+    void* (*allocate)(size_t);
+    void (*deallocate)(void*, size_t);
+};    
 
-namespace blazar::concepts {
+struct buffer_t {
+    size_t size;
+    void* address;
+};
 
-template<typename Type>
-concept Iterable = requires(Type type) { std::begin(type); std::end(type); };   
+struct memory_t {   
+    enum domain domain; 
+    struct allocator_t* allocator;  
+    struct buffer_t buffer; 
+}; 
 
-template <typename Type>
-concept Iterator = std::input_iterator<Type>;  
-
-template<typename Type>
-concept Integral = std::integral<Type>; 
-
-}
-
-#endif  
+#endif

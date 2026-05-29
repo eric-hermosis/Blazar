@@ -13,25 +13,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
+#ifndef LAYOUT_H_0x45524943
+#define LAYOUT_H_0x45524943 
+#define DIMENSIONS_0x45524943 8  
+ 
+#include "types.h"    
+ 
+struct shape_t { 
+    union {
+        size_type sizes[DIMENSIONS_0x45524943];
+        const size_type* address;
+    };
+};
 
-#ifndef CONCEPTS_HPP_0x45524943 
-#define CONCEPTS_HPP_0x45524943  
-
-#include <concepts>
-#include <iterator>   
-
-namespace blazar::concepts {
-
-template<typename Type>
-concept Iterable = requires(Type type) { std::begin(type); std::end(type); };   
-
-template <typename Type>
-concept Iterator = std::input_iterator<Type>;  
-
-template<typename Type>
-concept Integral = std::integral<Type>; 
-
-}
-
-#endif  
+struct strides_t { 
+    union {
+        size_type sizes[DIMENSIONS_0x45524943];
+        const size_type* address;
+    };
+};  
+  
+#endif // LAYOUT_H_0x45524943

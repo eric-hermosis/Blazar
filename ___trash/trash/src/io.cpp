@@ -3,8 +3,9 @@
 #include <blazar/core/layout.h>
 #include <blazar/core/graph.h>
 #include <blazar/types.hpp>
-#include <blazar/layout/shape.hpp>
-#include <blazar/layout/strides.hpp>  
+#include <blazar/shape.hpp>
+#include <blazar/strides.hpp>  
+#include <unordered_set>
 
 namespace blazar::io {
 

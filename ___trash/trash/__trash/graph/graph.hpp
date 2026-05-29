@@ -15,23 +15,27 @@
 // limitations under the License.
 // 
 
-#ifndef CONCEPTS_HPP_0x45524943 
-#define CONCEPTS_HPP_0x45524943  
+#ifndef GRAPH_HPP_0x45524943 
+#define GRAPH_HPP_0x45524943 
 
-#include <concepts>
-#include <iterator>   
+#include <iosfwd>
+#include <blazar/graph/vertices.hpp>
 
-namespace blazar::concepts {
+namespace blazar {
 
-template<typename Type>
-concept Iterable = requires(Type type) { std::begin(type); std::end(type); };   
+class Graph {  
+public:
 
-template <typename Type>
-concept Iterator = std::input_iterator<Type>;  
+    Graph() = default;
 
-template<typename Type>
-concept Integral = std::integral<Type>; 
+    template<class Expression>
+    Graph(Expression const& expression) {
+        head_ = expression.forward();
+    } 
+    
+    Vertex head_;
+};
 
 }
 
-#endif  
+#endif

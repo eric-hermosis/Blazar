@@ -13,25 +13,25 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
+#ifndef GRAPH_H_0x45524943
+#define GRAPH_H_0x45524943
+#define ARITY_0x45524943 4  
 
-#ifndef CONCEPTS_HPP_0x45524943 
-#define CONCEPTS_HPP_0x45524943  
+#include <cstdint>
 
-#include <concepts>
-#include <iterator>   
+struct symbol_t { 
+    const char* name;
+};
+   
+struct node_t {        
+    uint8_t arity;  
+    struct symbol_t symbol;  
+    struct node_t* sources[ARITY_0x45524943];     
+}; 
 
-namespace blazar::concepts {
+struct graph_t {
+    struct node_t* head;
+};
 
-template<typename Type>
-concept Iterable = requires(Type type) { std::begin(type); std::end(type); };   
-
-template <typename Type>
-concept Iterator = std::input_iterator<Type>;  
-
-template<typename Type>
-concept Integral = std::integral<Type>; 
-
-}
-
-#endif  
+#endif // GRAPH_HP_0x45524943

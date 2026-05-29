@@ -1,9 +1,9 @@
 #include <cassert>
 #include <stack>
 #include <deque>
-#include <vector> 
+#include <vector>
+#include <blazar/memory.hpp>
 #include <blazar/core/memory.h> 
-#include <blazar/resources/memory.hpp>
 
 namespace blazar::host {
 
