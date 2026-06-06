@@ -47,13 +47,15 @@ private:
 class Error : public std::runtime_error {
 public: 
     explicit Error(std::string_view message, std::source_location location = std::source_location::current())
-        : std::runtime_error(std::format(
-            "[{}:{}] {}: {}", 
-            location.file_name(), 
-            location.line(), 
-            location.function_name(), 
-            message
-        )) 
+    :   std::runtime_error(
+            std::format(
+                "[{}:{}] {}: {}", 
+                location.file_name(), 
+                location.line(), 
+                location.function_name(), 
+                message
+            )
+        ) 
     {}
 };
      

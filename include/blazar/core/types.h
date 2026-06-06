@@ -33,24 +33,10 @@ enum type {
     float64,
     complex64,   
     complex128,  
-    any,
     object,
+    any, 
     unknown,
     TYPES
-};  
+};   
 
-#ifdef __cplusplus 
-#include <cstdint>   
-using rank_type  = std::uint8_t; 
-using code_type  = std::int16_t; 
-using size_type  = std::int64_t ;
-using index_type = std::int64_t ;
-#else
-#include <stdint.h>  
-typedef uint8_t rank_type;
-typedef int16_t code_type;
-typedef int64_t size_type;
-typedef int64_t index_type; 
-#endif 
- 
 #endif // TYPES_H_0x45524943

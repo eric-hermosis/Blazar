@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-#include <blazar/layout/shape.hpp> 
-#include <blazar/layout/strides.hpp> 
+#include <blazar/layouts.hpp>
 
 using namespace blazar;
 

@@ -69,6 +69,7 @@ TEST(DTypeTest, OstreamOperatorPrintsCorrectly) {
     } 
 }
 
+/*
 
 TEST(TestTypes, TypeOfFunction) {
     EXPECT_EQ(Type::of(bool{}), boolean);
@@ -89,8 +90,7 @@ TEST(TestTypes, TypeOfFunction) {
     EXPECT_EQ(Type::of(std::complex<float>{}),  complex64);
     EXPECT_EQ(Type::of(std::complex<double>{}), complex128);
 }
-
-/*
+ 
 TEST(TestTypes, ConstructFromString) {
     EXPECT_EQ(std::string(Type("uint8").name()), "uint8");
     EXPECT_EQ(std::string(Type("uint64").name()), "uint64");

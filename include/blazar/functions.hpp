@@ -14,21 +14,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#ifndef FUNCTIONS_HPP_0x45524943 
-#define FUNCTIONS_HPP_0x45524943 
+#ifndef FUNCTORS_HPP_0x45524943 
+#define FUNCTORS_HPP_0x45524943 
 
 #include <blazar/types.hpp>
-#include <blazar/shape.hpp>
-#include <blazar/strides.hpp> 
-#include <blazar/operations.hpp>
+#include <blazar/layouts.hpp>
+#include <blazar/expressions.hpp>
 
-namespace blazar::expressions {
+namespace blazar::expressions { 
 
-template<class Function, class Argument>
-class Functor : public Operator<Function, Argument> {
-public:
-    using Operator::Operator;
-};
+template<class Functor, class... Arguments>
+class Function : public Expression<Functor, ...Arguments>{
+public:   
+    constexpr Function(Functor functor, Arguments const&... arguments)
+    :   Expression<Functor, Arguments...>(functor, arguments...)
+    {  
+        type_   = Type::infer<Functor>(arguments.type()...);
+        layout_ = Layout::infer<Functor>(arguments.layout()...); 
+    } 
+
+    [[nodiscard]] constexpr auto type() const -> Type const& {
+        return type_;
+    }
+
+    [[nodiscard]] constexpr auto layout() const -> Layout const& {
+        return layout;
+    }
+
+private:
+    Type type_;    
+    Layout layout_; 
+}; 
 
 } namespace blazar::functions {
     
@@ -51,57 +67,57 @@ using namespace functions;
 
 template<class Argument>
 constexpr auto log(Argument&& argument) {
-    return Functor<Log, Argument>({}, std::forward<Argument>(argument));
+    return Function<Log, Argument>({}, std::forward<Argument>(argument));
 }
 
 template<class Argument>
 constexpr auto exp(Argument&& argument) {
-    return Functor<Exp, Argument>({}, std::forward<Argument>(argument));
+    return Function<Exp, Argument>({}, std::forward<Argument>(argument));
 }
 
 template<class Argument>
 constexpr auto sqrt(Argument&& argument) {
-    return Functor<Sqrt, Argument>({}, std::forward<Argument>(argument));
+    return Function<Sqrt, Argument>({}, std::forward<Argument>(argument));
 }  
 
 template<class Argument>
 constexpr auto rsqrt(Argument&& argument) {
-    return Functor<Rsqrt, Argument>(std::forward<Argument>(argument));
+    return Function<Rsqrt, Argument>(std::forward<Argument>(argument));
 }
 
 template<class Argument>
 constexpr auto abs(Argument&& argument) {
-    return Functor<Abs, Argument>({}, std::forward<Argument>(argument));
+    return Function<Abs, Argument>({}, std::forward<Argument>(argument));
 }
 
 template<class Argument>
 constexpr auto sin(Argument&& argument) {
-    return Functor<Sin, Argument>({}, std::forward<Argument>(argument));
+    return Function<Sin, Argument>({}, std::forward<Argument>(argument));
 } 
 
 template<class Argument>
 constexpr auto cos(Argument&& argument) {
-    return Functor<Cos, Argument>({}, std::forward<Argument>(argument));
+    return Function<Cos, Argument>({}, std::forward<Argument>(argument));
 }
  
 template<class Argument>
 constexpr auto tan(Argument&& argument) {
-    return Functor<Tan, Argument>({}, std::forward<Argument>(argument));
+    return Function<Tan, Argument>({}, std::forward<Argument>(argument));
 }
  
 template<class Argument>
 constexpr auto sinh(Argument&& argument) {
-    return Functor<Sinh, Argument>({}, std::forward<Argument>(argument));
+    return Function<Sinh, Argument>({}, std::forward<Argument>(argument));
 }
  
 template<class Argument>
 constexpr auto cosh(Argument&& argument) {
-    return Functor<Cosh, Argument>({}, std::forward<Argument>(argument));
+    return Function<Cosh, Argument>({}, std::forward<Argument>(argument));
 }
  
 template<class Argument>
 constexpr auto tanh(Argument&& argument) {
-    return Functor<Tanh, Argument>({}, std::forward<Argument>(argument));
+    return Function<Tanh, Argument>({}, std::forward<Argument>(argument));
 }
 
 } namespace blazar {
@@ -120,4 +136,4 @@ using operators::tanh;
 
 } 
 
-#endif // FUNCTIONS_HPP_0x45524943 
+#endif

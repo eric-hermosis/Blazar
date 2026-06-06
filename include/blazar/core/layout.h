@@ -22,15 +22,15 @@
  
 struct shape_t { 
     union {
-        size_type sizes[DIMENSIONS_0x45524943];
-        const size_type* address;
+        int64_t sizes[DIMENSIONS_0x45524943];
+        const int64_t* address;
     };
 };
 
 struct strides_t { 
     union {
-        size_type sizes[DIMENSIONS_0x45524943];
-        const size_type* address;
+        int64_t sizes[DIMENSIONS_0x45524943];
+        const int64_t* address;
     };
 };  
   

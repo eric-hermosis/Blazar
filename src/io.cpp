@@ -3,17 +3,20 @@
 #include <blazar/core/layout.h>
 #include <blazar/core/graph.h>
 #include <blazar/types.hpp>
-#include <blazar/layout/shape.hpp>
-#include <blazar/layout/strides.hpp>  
+#include <blazar/layouts.hpp>
 
 namespace blazar::io {
+
+using blazar::layouts::rank_type;
+using blazar::layouts::size_type;
+using blazar::layouts::index_type; 
 
 void print(std::ostream& stream, rank_type rank) {
     stream << static_cast<int>(rank);
 }
 
 void print(std::ostream& stream, type type) {
-    stream << Type(type).name();
+    stream << types::traits[type].name;
 }
 
 void print(std::ostream& stream, const shape_t& shape, rank_type dimensions, bool reference = false) {
