@@ -4,6 +4,7 @@
 #include <blazar/types.hpp>
 #include <blazar/layouts.hpp>
 #include <blazar/views.hpp>
+#include <blazar/runtime/storage.hpp>
 
 namespace blazar::variables {
  
@@ -65,9 +66,14 @@ public:
         return layout_;
     }
 
+    void initialize(Environment const& environment = Host()) {
+        storage_ = Storage(layout_.size(), environment);
+    }
+
 private:
     Type type_;
     Layout layout_;
+    mutable Storage storage_;
 };
 
 } namespace blazar {

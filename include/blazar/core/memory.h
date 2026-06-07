@@ -42,7 +42,7 @@ struct buffer_t {
 
 struct memory_t {   
     enum domain domain; 
-    struct allocator_t* allocator;  
+    struct allocator_t allocator;  
     struct buffer_t buffer; 
 }; 
 

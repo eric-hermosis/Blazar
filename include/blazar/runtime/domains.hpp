@@ -19,16 +19,26 @@
 #define DOMAINS_HPP_0x45524943  
  
 #include <variant>   
+#include <string_view>
 
 namespace blazar {
 
+struct Allocator {
+    std::string_view name;
+    auto (*allocate)(std::size_t) -> void*;
+    void (*deallocate)(void*, std::size_t); 
+};
+
 class Host {
 public:
-    Host() = default; 
+    Host(); 
+
+    auto allocator() const -> Allocator const&;
+private:    
+    Allocator allocator_;
 };  
    
-using Environment = std::variant<
-    std::monostate,
+using Environment = std::variant< 
     Host
 >;
 

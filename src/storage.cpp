@@ -1,6 +1,7 @@
+#include <cassert>
 #include <blazar/exceptions.hpp>
-#include <blazar/resources/storage.hpp>
-#include <blazar/resources/memory.hpp>
+#include <blazar/runtime/storage.hpp>
+#include <blazar/runtime/memory.hpp>
 
 namespace blazar {
 
@@ -37,8 +38,8 @@ auto Storage::size() const noexcept -> std::size_t {
 }
 
 auto Storage::environment() const noexcept -> Environment const& {  
-    static const Environment nowhere = std::monostate{};
-    return memory_ ? memory_ -> environment() : nowhere;
+    assert(memory_);
+    return memory_->environment();
 }
 
 auto Storage::get() const noexcept -> Memory const* {

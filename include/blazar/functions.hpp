@@ -14,8 +14,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#ifndef FUNCTORS_HPP_0x45524943 
-#define FUNCTORS_HPP_0x45524943 
+#ifndef FUNCTIONS_HPP_0x45524943 
+#define FUNCTIONS_HPP_0x45524943 
 
 #include <blazar/types.hpp>
 #include <blazar/layouts.hpp>

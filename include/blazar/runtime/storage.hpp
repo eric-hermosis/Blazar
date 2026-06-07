@@ -21,7 +21,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <utility>
-#include <blazar/resources/domains.hpp> 
+#include <blazar/runtime/domains.hpp> 
 
 namespace blazar { 
 
