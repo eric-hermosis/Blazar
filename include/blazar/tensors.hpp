@@ -4,20 +4,19 @@
 #include <blazar/types.hpp>
 #include <blazar/layouts.hpp>
 #include <blazar/views.hpp>
-#include <blazar/runtime/storage.hpp>
+#include <blazar/storage.hpp>
+#include <blazar/graph.hpp>
+#include <blazar/symbols.hpp>
+#include <blazar/execution.hpp>
 
 namespace blazar::variables {
  
-template<class Expression>
-concept Composable = requires(Expression const& expression) {
-    { expression.type()   } -> std::same_as<Type const&>;
-    { expression.layout() } -> std::same_as<Layout const&>;
-};
-
 using layouts::index_type;
 using layouts::range_type; 
 using expressions::View;
-using expressions::Slice;
+using expressions::Slice; 
+using execution::Item;
+using execution::Plan;
 
 class Tensor {
 public: 
@@ -34,11 +33,26 @@ public:
 
     constexpr Tensor(Composable auto const& expression) 
     :   type_(expression.type())
-    ,   layout_(expression.layout()) {}
+    ,   layout_(expression.layout()) {
+        if !consteval {
+            auto graph  = Graph(expression);  
+            auto plan   = Plan(expression);
+            plan.execute();
+            vertex_ = graph.head();
+            vertex_.prune();
+        }
+    }
 
     constexpr auto operator=(Composable auto const& expression) -> Tensor& {
         type_   = expression.type();
-        layout_ = expression.layout();
+        layout_ = expression.layout();        
+        if !consteval {  
+            auto graph  = Graph(expression);  
+            auto plan   = Plan(expression);
+            plan.execute();
+            vertex_ = graph.head();
+            vertex_.prune();
+        }
         return *this;
     } 
 
@@ -66,13 +80,23 @@ public:
         return layout_;
     }
 
-    void initialize(Environment const& environment = Host()) {
-        storage_ = Storage(layout_.size(), environment);
+    void initialize(Environment const& environment = Host()) const {
+        vertex_  = Vertex(*this, type(), layout());
+        storage_ = Storage(layout_.size(), environment); 
+    }
+ 
+    auto forward(Graph& graph) const -> Vertex const& { 
+        return vertex_;
+    }  
+
+    auto forward(Plan& plan) const -> Item {
+        return Item(storage_);
     }
 
 private:
     Type type_;
     Layout layout_;
+    mutable Vertex  vertex_;
     mutable Storage storage_;
 };
 

@@ -13,37 +13,28 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
+//
+#ifndef SYMBOLS_H_0x45524943
+#define SYMBOLS_H_0x45524943 
 
-#ifndef DOMAINS_HPP_0x45524943 
-#define DOMAINS_HPP_0x45524943  
- 
-#include <variant>   
-#include <string_view>
+enum symbol {   
+    NEG,
+    ADD,
+    DIV,
+    SUB,
+    MUL,
+    POW,
+    LOG,
+    EXP,
+    SQRT,
+    RSQRT,
+    ABS,
+    SIN,
+    COS,
+    TAN,
+    SINH,
+    COSH,
+    TANH,
+};   
 
-namespace blazar {
-
-struct Allocator {
-    std::string_view name;
-    auto (*allocate)(std::size_t) -> void*;
-    void (*deallocate)(void*, std::size_t); 
-};
-
-class Host {
-public:
-    Host(); 
-
-    auto allocator() const -> Allocator const&;
-private:    
-    Allocator allocator_;
-};  
-   
-using Environment = std::variant< 
-    Host
->;
-
-Environment operator|(Environment const&, Environment const&);
-
-} 
-
-#endif
+#endif 

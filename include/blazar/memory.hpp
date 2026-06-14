@@ -21,21 +21,21 @@
 #include <cstdint>
 #include <cstddef>
 #include <memory>
-#include <blazar/runtime/domains.hpp>
+#include <blazar/environments.hpp>
 #include <blazar/core/memory.h>
 
 namespace blazar {
 
 class Memory {      
-public: 
-    auto operator new(std::size_t) -> void*;
-    void operator delete(void*, std::size_t) noexcept;  
+public:  
     Memory(std::size_t, Environment const&);
     ~Memory();   
     Memory(Memory const&) = delete;
     Memory(Memory &&) = delete; 
     auto operator=(Memory const&) -> Memory& = delete;
     auto operator=(Memory &&) -> Memory& = delete;
+    auto operator new(std::size_t) -> void*;
+    void operator delete(void*, std::size_t) noexcept;  
     
     [[nodiscard]] auto size() const noexcept -> std::size_t;
     [[nodiscard]] auto environment() const noexcept -> Environment const&; 

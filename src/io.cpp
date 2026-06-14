@@ -1,7 +1,7 @@
 #include <iostream>
 #include <blazar/core/types.h>
-#include <blazar/core/layout.h>
-#include <blazar/core/graph.h>
+#include <blazar/core/layouts.h>
+#include <blazar/core/trace.h>
 #include <blazar/types.hpp>
 #include <blazar/layouts.hpp>
 

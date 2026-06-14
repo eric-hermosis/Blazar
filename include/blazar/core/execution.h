@@ -1,6 +1,6 @@
-// Copyright 2026 Eric Hermosis
+// Copyright 2025 Eric Hermosis
 //
-// This file is part of the Blazar Tensor Library.
+// This file is part of the Tannic Tensor Library.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,24 +14,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#ifndef LAYOUT_H_0x45524943
-#define LAYOUT_H_0x45524943 
-#define DIMENSIONS_0x45524943 8  
- 
-#include "types.h"    
- 
-struct shape_t { 
-    union {
-        int64_t sizes[DIMENSIONS_0x45524943];
-        const int64_t* address;
-    };
-};
 
-struct strides_t { 
-    union {
-        int64_t sizes[DIMENSIONS_0x45524943];
-        const int64_t* address;
-    };
-};  
-  
-#endif // LAYOUT_H_0x45524943
+#ifndef EXECUTION_H_0x45524943 
+#define EXECUTION_H_0x45524943 
+
+enum status { 
+    PENDING, 
+    SUCCESS,
+    ERROR,
+    UNSUPPORTED
+};
+ 
+struct handler_t {
+    const char* backend; 
+    enum status(*invoke)(struct node_t*);
+}; 
+
+#endif

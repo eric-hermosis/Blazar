@@ -5,12 +5,16 @@
 #include <type_traits>
 #include <blazar/types.hpp>
 #include <blazar/layouts.hpp>
+#include <blazar/graph.hpp> 
+#include <blazar/execution.hpp>
 
 namespace blazar::expressions {
     
 using layouts::index_type;
 using layouts::range_type;
- 
+using execution::Item;
+using execution::Plan;
+
 template<class Expression>
 class Trait {
 public:
@@ -18,7 +22,7 @@ public:
 };
  
 template<class Symbol, class Source> class View;
-struct Slice;
+struct Slice; 
 
 template<class Symbol, class ... Expressions>
 class Expression {
@@ -44,6 +48,41 @@ public:
     constexpr auto operator[](this Self&& self, Arguments... arguments) {
         return View<Slice, Self>(std::forward<Self>(self), arguments...);
     }
+
+    template<typename Self>
+    auto forward(this Self&& self, Graph& graph) -> Vertex const& {
+        if(!self.vertex_) { 
+            self.vertex_ = Vertex(self.symbol, self.type(), self.layout());
+            template for (auto const& source : self.sources) {    
+                self.vertex_.link(source.forward(graph));
+            }  
+            self.index_ = ++graph.size;  
+        }
+        return self.vertex_;
+    }
+
+    template<typename Self>
+    auto forward(this Self&& self, Plan& plan) -> Item {
+        if (plan.visited(self)) {
+            return Item();
+
+        } else {
+            plan.visit(self);
+            return Item();
+        } 
+    }
+ 
+    auto index() const -> int {
+        return index_;
+    }
+
+    auto vertex() const -> Vertex const& {
+        return vertex_;
+    }
+
+private:
+    mutable int index_;
+    mutable Vertex vertex_; 
 };
 
 }

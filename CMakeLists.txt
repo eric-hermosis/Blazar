@@ -7,7 +7,7 @@ project(Blazar)
 
 file(GLOB SOURCES 
     "src/*.cpp" 
-    "src/graph/*.cpp" 
+    "src/cpu/*.cpp" 
 )
  
 add_compile_options(-freflection)

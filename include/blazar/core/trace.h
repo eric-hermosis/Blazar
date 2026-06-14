@@ -14,24 +14,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-#ifndef GRAPH_H_0x45524943
-#define GRAPH_H_0x45524943
-#define ARITY_0x45524943 4  
+#ifndef TRACE_H_0x45524943
+#define TRACE_H_0x45524943 
+ 
+#include <blazar/core/types.h>
+#include <blazar/core/layouts.h>
 
-#include <cstdint>
-
-struct symbol_t { 
+struct node_t { 
     const char* name;
-};
-   
-struct node_t {        
-    uint8_t arity;  
-    struct symbol_t symbol;  
-    struct node_t* sources[ARITY_0x45524943];     
-}; 
-
-struct graph_t {
-    struct node_t* head;
+    enum type type;
+    struct {
+        uint8_t rank;
+        int64_t size;
+        struct shape_t shape;
+        struct strides_t strides;
+    } layout;
 };
 
-#endif // GRAPH_HP_0x45524943
+#endif 

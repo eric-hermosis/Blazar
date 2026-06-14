@@ -21,7 +21,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <utility>
-#include <blazar/runtime/domains.hpp> 
+#include <blazar/environments.hpp> 
 
 namespace blazar { 
 
@@ -67,12 +67,11 @@ public:
  
     [[nodiscard]] auto size() const noexcept -> std::size_t; 
     [[nodiscard]] auto environment() const noexcept -> Environment const&;  
-    [[nodiscard]] auto get() const noexcept -> Memory const*;
- 
-protected:
+    [[nodiscard]] auto get() const noexcept -> Memory*;
+  
     void release();
     void copy(Storage const& other);
-    void move(Storage & other) noexcept;  
+    void move(Storage & other) noexcept;   
 
 private:
     Memory* memory_ = nullptr;

@@ -1,5 +1,6 @@
 #ifndef LAYOUT_HPP_0x45524943
 #define LAYOUT_HPP_0x45524943
+
 #include <cstdint>
 #include <cstddef> 
 #include <blazar/exceptions.hpp>

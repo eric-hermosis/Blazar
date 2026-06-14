@@ -3,7 +3,7 @@
 #include <deque>
 #include <vector> 
 #include <blazar/core/memory.h> 
-#include <blazar/runtime/memory.hpp>
+#include <blazar/memory.hpp>
 
 namespace blazar { 
    
@@ -12,21 +12,6 @@ static struct {
     std::stack<slot_t, std::deque<slot_t>> storage;
     std::stack<void*, std::vector<void*>> free;
 } pool;  
-
-auto Memory::allocate(std::size_t nbytes, Environment const& environment) -> Memory* {
-    return new Memory(nbytes, environment);
-}
-
-void Memory::acquire() {
-    ++references_; 
-}
-
-void Memory::release() { 
-    assert(references_ > 0 && "Assertion error: releasing empty resource");
-    if (--references_ == 0) { 
-        delete this;
-    }
-}
 
 auto Memory::operator new(std::size_t) -> void* {
     if (pool.free.empty()) {
@@ -41,7 +26,8 @@ auto Memory::operator new(std::size_t) -> void* {
 void Memory::operator delete(void* address, std::size_t) noexcept {
     pool.free.push(address);
 }
-   
+ 
+    
 Memory::Memory(std::size_t nbytes, Environment const& environment)
 :   environment_(environment)
 ,   references_(1) 
@@ -70,6 +56,21 @@ Memory::~Memory() {
         body_.allocator.deallocate(body_.buffer.address, body_.buffer.size);
         body_.buffer.address = nullptr;
         body_.buffer.size = 0;
+    }
+}
+
+auto Memory::allocate(std::size_t nbytes, Environment const& environment) -> Memory* {
+    return new Memory(nbytes, environment);
+}
+
+void Memory::acquire() {
+    ++references_; 
+}
+
+void Memory::release() { 
+    assert(references_ > 0 && "Assertion error: releasing empty resource");
+    if (--references_ == 0) { 
+        delete this;
     }
 }
 
