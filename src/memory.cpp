@@ -9,14 +9,14 @@ namespace blazar {
    
 static struct {
     struct slot_t { alignas(Memory) std::byte bytes[sizeof(Memory)]; };
-    std::stack<slot_t, std::deque<slot_t>> storage;
+    std::stack<slot_t> arena;
     std::stack<void*, std::vector<void*>> free;
 } pool;  
 
 auto Memory::operator new(std::size_t) -> void* {
     if (pool.free.empty()) {
-        pool.storage.emplace();
-        pool.free.push(&pool.storage.top());
+        pool.arena.emplace();
+        pool.free.push(&pool.arena.top());
     }
     void* address = pool.free.top();
     pool.free.pop();
@@ -26,8 +26,7 @@ auto Memory::operator new(std::size_t) -> void* {
 void Memory::operator delete(void* address, std::size_t) noexcept {
     pool.free.push(address);
 }
- 
-    
+  
 Memory::Memory(std::size_t nbytes, Environment const& environment)
 :   environment_(environment)
 ,   references_(1) 

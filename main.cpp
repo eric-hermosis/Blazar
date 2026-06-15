@@ -2,9 +2,19 @@
 #include <blazar/operations.hpp>
 #include <blazar/environments.hpp>
 #include <blazar/handlers.hpp>
+#include <blazar/tensors.hpp>
+#include <blazar/operations.hpp>
 
-using namespace blazar;
+#include <vector>
+#include <cassert>
+using namespace blazar; 
+
+class Plan {
+
+private:
+
+};
 
 int main() {   
-    auto dis = Handlers::get(operations::Addition{}, Host(), Type(float32), Type(float32));
+    
 }

@@ -36,8 +36,7 @@ public:
     ,   layout_(expression.layout()) {
         if !consteval {
             auto graph  = Graph(expression);  
-            auto plan   = Plan(expression);
-            plan.execute();
+            auto plan   = Plan(expression); 
             vertex_ = graph.head();
             vertex_.prune();
         }
@@ -48,8 +47,7 @@ public:
         layout_ = expression.layout();        
         if !consteval {  
             auto graph  = Graph(expression);  
-            auto plan   = Plan(expression);
-            plan.execute();
+            auto plan   = Plan(expression); 
             vertex_ = graph.head();
             vertex_.prune();
         }
@@ -90,7 +88,7 @@ public:
     }  
 
     auto forward(Plan& plan) const -> Item {
-        return Item(storage_);
+        return Item();
     }
 
 private:

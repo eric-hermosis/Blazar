@@ -14,7 +14,7 @@ template<class Expression>
 concept Composable = requires(Expression const& expression) {
     { expression.type()   } -> std::same_as<Type const&>;
     { expression.layout() } -> std::same_as<Layout const&>;
-}; 
+};  
 
 class Vertex {
 public:
@@ -64,11 +64,11 @@ public:
 
 private:
     Node* node_ = nullptr;
-};  
+};   
 
 class Graph {
 public:
-    int size = 0;
+    std::size_t size = 0;
 
     Graph(Composable auto const& expression) {
         head_ = expression.forward(*this);

@@ -1,12 +1,14 @@
 #ifndef EXPRESSIONS_HPP_0x45524943
 #define EXPRESSIONS_HPP_0x45524943
  
+#include <iostream>
+
 #include <tuple> 
 #include <type_traits>
 #include <blazar/types.hpp>
 #include <blazar/layouts.hpp>
 #include <blazar/graph.hpp> 
-#include <blazar/execution.hpp>
+#include <blazar/execution.hpp> 
 
 namespace blazar::expressions {
     
@@ -27,6 +29,7 @@ struct Slice;
 template<class Symbol, class ... Expressions>
 class Expression {
 public: 
+    using Index = std::size_t;
     std::decay<Symbol>::type symbol;
     std::tuple<typename Trait<Expressions>::type ...> sources;  
 
@@ -53,26 +56,31 @@ public:
     auto forward(this Self&& self, Graph& graph) -> Vertex const& {
         if(!self.vertex_) { 
             self.vertex_ = Vertex(self.symbol, self.type(), self.layout());
+            self.index_  = Index(++graph.size);  
             template for (auto const& source : self.sources) {    
                 self.vertex_.link(source.forward(graph));
-            }  
-            self.index_ = ++graph.size;  
+            }   
         }
         return self.vertex_;
     }
 
     template<typename Self>
-    auto forward(this Self&& self, Plan& plan) -> Item {
+    auto forward(this Self&& self, Plan& plan) -> Item { 
         if (plan.visited(self)) {
-            return Item();
-
-        } else {
-            plan.visit(self);
-            return Item();
+            std::cout << "RETURN ITEM FROM PLAN" << std::endl;
         } 
+        
+        else {
+            plan.visit(self);
+            std::cout << "CREATE TASK" << std::endl;
+            std::cout << "CREATE ITEM" << std::endl;
+            std::cout << "RETURN ITEM" << std::endl;
+        }
+        
+        return Item();
     }
  
-    auto index() const -> int {
+    auto index() const -> Index {
         return index_;
     }
 
@@ -81,7 +89,7 @@ public:
     }
 
 private:
-    mutable int index_;
+    mutable Index index_;
     mutable Vertex vertex_; 
 };
 

@@ -1,36 +1,17 @@
-#include <cassert>
-#include <blazar/trace.hpp>
+#include <cassert> 
 #include <stack>
 #include <vector>
 #include <deque>
 #include <iostream>
+#include <blazar/trace.hpp>
 
-namespace blazar { 
-
-static thread_local struct {
-    struct slot_t { alignas(Node) std::byte bytes[sizeof(Node)]; };
-    std::stack<slot_t, std::deque<slot_t>> storage;
-    std::stack<void*, std::vector<void*>> free;
-} pool;  
-
-auto Node::operator new(std::size_t) -> void* {
-    if (pool.free.empty()) {
-        pool.storage.emplace();
-        pool.free.push(&pool.storage.top());
-    }
-    void* address = pool.free.top();
-    pool.free.pop();
-    return address;
-}
+namespace blazar {  
  
-void Node::operator delete(void* address, std::size_t) noexcept {
-    pool.free.push(address);
+Node::Node() {
+    sources_.reserve(4);
 }
-    
-Node::Node(Symbol const& symbol, Type const& type, Layout const& layout) 
-:   references_(1)
-,   arity_(0)
-{
+
+void Node::set(Symbol const& symbol, Type const& type, Layout const& layout) { 
     shape_t shape;
     strides_t strides;
 
@@ -39,7 +20,7 @@ Node::Node(Symbol const& symbol, Type const& type, Layout const& layout)
         strides.sizes[dimension] = layout.stride(dimension);
     }
 
-    body_ = new node_t {
+    body_ = node_t {
         .name = symbol.name().data(),
         .type = type,
         .layout {
@@ -49,16 +30,23 @@ Node::Node(Symbol const& symbol, Type const& type, Layout const& layout)
             .strides = std::move(strides)
         }
     };
-}
+} 
 
-Node::~Node() {
-    if (body_) {
-        delete body_;
+static thread_local struct {
+    std::stack<Node> arena;
+    std::stack<Node*, std::vector<Node*>> free; 
+} nodes;
+
+auto Node::allocate(Symbol const& symbol, Type const& type, Layout const& layout) -> Node* { 
+    if (nodes.free.empty()) {
+        nodes.arena.emplace();
+        nodes.free.push(&nodes.arena.top());
     }
-}
- 
-auto Node::allocate(Symbol const& symbol, Type const& type, Layout const& layout) -> Node* {
-    return new Node(symbol, type, layout);
+    auto node = nodes.free.top();
+    node->acquire();
+    node->set(symbol, type, layout);
+    nodes.free.pop();
+    return node; 
 }
 
 void Node::acquire() {
@@ -68,24 +56,79 @@ void Node::acquire() {
 void Node::release() { 
     assert(references_ > 0 && "Assertion error: releasing empty resource");
     if (--references_ == 0) { 
-        for (auto index = 0; index < arity_; index++) {
-            sources_[index] -> release(); 
-        }
-        delete this;
+        prune();
+        nodes.free.push(this);
     }
+}
+
+auto Node::arity() const noexcept -> std::uint8_t {
+    return sources_.size();
 }
 
 void Node::link(Node* source) { 
     assert(source);
     source -> acquire();
-    sources_[arity_++] = source; 
+    sources_.push_back(source); 
 }
 
-void Node::prune() {
-    for (auto index = 0; index < arity_; index++) {
-        sources_[index] -> release(); 
+void Node::prune() {   
+    for (auto node : sources_) {
+        node->release();
     }
-    arity_ = 0;
+    sources_.clear();
 }
+
+Task::Task() {
+    sources_.reserve(4);
+}
+
+void Task::set() { 
+} 
+
+static thread_local struct {
+    std::stack<Task> arena;
+    std::stack<Task*, std::vector<Task*>> free; 
+} tasks;
+
+auto Task::allocate() -> Task* { 
+    if (tasks.free.empty()) {
+        tasks.arena.emplace();
+        tasks.free.push(&tasks.arena.top());
+    }
+    auto task = tasks.free.top();
+    task->acquire();
+    task->set();
+    tasks.free.pop();
+    return task; 
+} 
+
+void Task::acquire() {
+    ++references_; 
+}
+
+void Task::release() { 
+    assert(references_ > 0 && "Assertion error: releasing empty resource");
+    if (--references_ == 0) { 
+        prune();
+        tasks.free.push(this);
+    }
+}
+
+auto Task::arity() const noexcept -> std::uint8_t {
+    return sources_.size();
+}
+
+void Task::link(Task* source) { 
+    assert(source);
+    source -> acquire();
+    sources_.push_back(source); 
+}
+
+void Task::prune() {   
+    for (auto task : sources_) {
+        task->release();
+    }
+    sources_.clear();
+} 
 
 }

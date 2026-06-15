@@ -7,33 +7,43 @@
 #include <blazar/layouts.hpp>
 #include <cstdint>
 #include <cstddef>
+#include <vector>
 
 namespace blazar {
 
 class Node {
-public:
-    Node(Symbol const& symbol, Type const& type, Layout const& layout);
-    ~Node();
-    Node(Node const& other) = delete;
-    Node(Node && other) noexcept = delete;
-    auto operator=(Node const& other) -> Node& = delete;
-    auto operator=(Node && other) noexcept -> Node& = delete;
-    auto operator new(std::size_t size) -> void*;
-    void operator delete(void* address, std::size_t size) noexcept;    
-    
+public: 
+    Node();
+    void set(Symbol const& symbol, Type const& type, Layout const& layout);
     void acquire();
     void release();  
     void link(Node* source); 
-    void prune();
-    
-    [[nodiscard]] static auto allocate(Symbol const& symbol, Type const& type, Layout const& layout) -> Node*;
-    [[nodiscard]] auto references() -> std::uint32_t;
+    void prune(); 
 
-private: 
-    node_t* body_;   
-    std::uint32_t references_;
-    std::uint8_t arity_;
-    Node* sources_[4];
+    [[nodiscard]] static auto allocate(Symbol const& symbol, Type const& type, Layout const& layout) -> Node*; 
+    [[nodiscard]] auto arity() const noexcept -> std::uint8_t;
+
+private:   
+    node_t body_;   
+    std::uint32_t references_ = 0; 
+    std::vector<Node*> sources_; 
+};
+
+class Task {
+public:
+    Task();
+    void set();
+    void acquire();
+    void release();  
+    void link(Task* source); 
+    void prune();  
+
+    [[nodiscard]] static auto allocate() -> Task*; 
+    [[nodiscard]] auto arity() const noexcept -> std::uint8_t;
+
+private:
+    std::uint32_t references_ = 0; 
+    std::vector<Task*> sources_; 
 };
 
 }

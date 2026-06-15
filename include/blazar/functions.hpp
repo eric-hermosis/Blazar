@@ -24,7 +24,7 @@
 namespace blazar::expressions { 
 
 template<class Functor, class... Arguments>
-class Function : public Expression<Functor, ...Arguments>{
+class Function : public Expression<Functor, Arguments...>{
 public:   
     constexpr Function(Functor functor, Arguments const&... arguments)
     :   Expression<Functor, Arguments...>(functor, arguments...)
