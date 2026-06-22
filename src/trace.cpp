@@ -1,15 +1,16 @@
 #include <cassert> 
 #include <stack>
 #include <vector>
-#include <deque>
-#include <iostream>
+#include <deque> 
 #include <blazar/trace.hpp>
 
-namespace blazar {  
- 
+namespace blazar {   
+
 Node::Node() {
     sources_.reserve(4);
 }
+
+Node::~Node() {}
 
 void Node::set(Symbol const& symbol, Type const& type, Layout const& layout) { 
     shape_t shape;
@@ -31,6 +32,13 @@ void Node::set(Symbol const& symbol, Type const& type, Layout const& layout) {
         }
     };
 } 
+
+void Node::set(Storage const& storage) {
+    memory_ = storage.get();
+    if (memory_) {
+        memory_-> acquire();
+    }
+}
 
 static thread_local struct {
     std::stack<Node> arena;
@@ -56,6 +64,10 @@ void Node::acquire() {
 void Node::release() { 
     assert(references_ > 0 && "Assertion error: releasing empty resource");
     if (--references_ == 0) { 
+        if (memory_) {
+            memory_-> release();
+            memory_ = nullptr;
+        }
         prune();
         nodes.free.push(this);
     }
@@ -76,59 +88,68 @@ void Node::prune() {
         node->release();
     }
     sources_.clear();
-}
-
-Task::Task() {
-    sources_.reserve(4);
-}
-
-void Task::set() { 
 } 
+
+} namespace blazar::execution { 
+    
+Task::Task() {
+    sources_.reserve(4); 
+}
+
+auto Task::arity() const noexcept -> std::size_t {
+    return sources_.size();
+}
+
+void Task::link(Task* source) {
+    assert(source);
+    sources_.push_back(source); 
+}
+  
+void Task::prune() {
+    sources_.clear();
+}
 
 static thread_local struct {
     std::stack<Task> arena;
     std::stack<Task*, std::vector<Task*>> free; 
 } tasks;
 
-auto Task::allocate() -> Task* { 
+Tasks::Tasks(std::size_t count) {
+    checklist_.resize(count);
+    std::fill(checklist_.begin(), checklist_.end(), nullptr); 
+} 
+
+auto Tasks::allocate(std::size_t index) -> Task* { 
+    assert(checklist_[index] == nullptr);
     if (tasks.free.empty()) {
         tasks.arena.emplace();
         tasks.free.push(&tasks.arena.top());
     }
-    auto task = tasks.free.top();
-    task->acquire();
-    task->set();
-    tasks.free.pop();
+    auto task = tasks.free.top(); 
+    checklist_[index] = task;
+    tasks.free.pop(); 
     return task; 
 } 
 
-void Task::acquire() {
-    ++references_; 
+void Tasks::resize(std::size_t count) {
+    checklist_.resize(count, nullptr);
 }
 
-void Task::release() { 
-    assert(references_ > 0 && "Assertion error: releasing empty resource");
-    if (--references_ == 0) { 
-        prune();
-        tasks.free.push(this);
+void Tasks::clear() {
+    for (std::size_t index = 0; index < checklist_.size(); ++index) {
+        if (checklist_[index]) {
+            tasks.free.push(checklist_[index]);
+            checklist_[index] = nullptr;
+        }
     }
 }
 
-auto Task::arity() const noexcept -> std::uint8_t {
-    return sources_.size();
+bool Tasks::has(std::size_t index) noexcept { 
+    return checklist_[index] ? true : false;
 }
 
-void Task::link(Task* source) { 
-    assert(source);
-    source -> acquire();
-    sources_.push_back(source); 
+auto Tasks::get(std::size_t index) -> Task* { 
+    return checklist_[index];
 }
-
-void Task::prune() {   
-    for (auto task : sources_) {
-        task->release();
-    }
-    sources_.clear();
-} 
 
 }

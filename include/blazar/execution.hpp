@@ -3,65 +3,56 @@
 
 #include <vector>
 #include <memory>
+#include <tuple>
 #include <blazar/graph.hpp>
-#include <blazar/storage.hpp>
+#include <blazar/storage.hpp> 
+#include <blazar/handlers.hpp>
+#include <blazar/environments.hpp>
 
-namespace blazar {
+namespace blazar::execution { 
 
 class Task;
+class Tasks;
 
-} namespace blazar::execution {
+class Item {
+public:
+    Item() = default;
+    Item(Task* task);  
+    auto get() const -> Task*;
+    void succeed(Item const&); 
+
+private:  
+    Task* task_ = nullptr; 
+};
+
+class Items {
+public:  
+    using Index = std::size_t;
+
+    Items(std::size_t count);
+    ~Items();
+    Items(Items&&) = delete;
+    Items& operator=(Items&&) = delete; 
+    Items(const Items&) = delete;
+    Items& operator=(const Items&) = delete;   
+
+    template<class Symbol, class ... Items>
+    auto build(Symbol, Index index, Vertex const& vertex, Items const& ... items) -> Item {
+        auto item = create(index); 
+        template for (auto const& prior : std::tuple{items...}) {
+            item.succeed(prior);
+        }
+        return item;
+    } 
  
-class Item { 
-public:
-    void succeed(Item const& other);
-    
+    bool has(Index index);
+    auto get(Index index) -> Item;    
+    auto create(Index index) -> Item;
 
 private:
-    Task* task_;
-};  
-
-class Visitor {
-public:
-    explicit Visitor(std::size_t size); 
-    void resize(std::size_t size);  
-    void visit(std::size_t index); 
-    bool visited(std::size_t index) const; 
-    void reset(); 
-    std::size_t size() const;
-
-private:
-    std::vector<std::uint64_t> bits_;
+    std::unique_ptr<Tasks> tasks_; 
 };
-
-class Plan {
-public:
-    Plan(std::size_t);
-    ~Plan();
-    Plan(Plan const&) = delete;
-    Plan(Plan && other) = delete;
-    auto operator=(Plan const&) = delete;
-    auto operator=(Plan&&) noexcept = delete;
-
-    template<class Expression>
-    Plan(Expression const& expression) : Plan(expression.index()) {
-        auto item = expression.forward(*this);
-    }
-
-    template<class Expression>
-    auto visited(Expression const& expression) -> bool {
-        return visitor_->visited(expression.index());
-    }
-
-    template<class Expression>
-    void visit(Expression const& expression) {
-        visitor_->visit(expression.index());
-    }
-
-private:     
-    std::unique_ptr<Visitor> visitor_ = nullptr; 
-};
-
+ 
 }
 
 #endif

@@ -14,9 +14,9 @@ namespace blazar::variables {
 using layouts::index_type;
 using layouts::range_type; 
 using expressions::View;
-using expressions::Slice; 
+using expressions::Slice;   
 using execution::Item;
-using execution::Plan;
+using execution::Items;
 
 class Tensor {
 public: 
@@ -35,9 +35,9 @@ public:
     :   type_(expression.type())
     ,   layout_(expression.layout()) {
         if !consteval {
-            auto graph  = Graph(expression);  
-            auto plan   = Plan(expression); 
-            vertex_ = graph.head();
+            auto vertices = Vertices();  
+            auto items    = Items(vertices.count);
+            vertex_ = expression.forward(vertices);
             vertex_.prune();
         }
     }
@@ -46,9 +46,8 @@ public:
         type_   = expression.type();
         layout_ = expression.layout();        
         if !consteval {  
-            auto graph  = Graph(expression);  
-            auto plan   = Plan(expression); 
-            vertex_ = graph.head();
+            auto vertices = Vertices();   
+            vertex_ = expression.forward(vertices);
             vertex_.prune();
         }
         return *this;
@@ -79,23 +78,23 @@ public:
     }
 
     void initialize(Environment const& environment = Host()) const {
-        vertex_  = Vertex(*this, type(), layout());
         storage_ = Storage(layout_.size(), environment); 
+        vertex_  = Vertex(*this, type(), layout(), storage_); 
     }
  
-    auto forward(Graph& graph) const -> Vertex const& { 
+    auto forward(Vertices& graph) const -> Vertex const& { 
         return vertex_;
-    }  
+    }   
 
-    auto forward(Plan& plan) const -> Item {
+    auto forward(Items& items) const -> Item {
         return Item();
     }
 
 private:
     Type type_;
     Layout layout_;
-    mutable Vertex  vertex_;
     mutable Storage storage_;
+    mutable Vertex  vertex_;
 };
 
 } namespace blazar {

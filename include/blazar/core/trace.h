@@ -29,6 +29,22 @@ struct node_t {
         struct shape_t shape;
         struct strides_t strides;
     } layout;
+}; 
+
+enum status { 
+    PENDING, 
+    SUCCESS,
+    ERROR,
+    UNSUPPORTED
+};
+ 
+struct handler_t {
+    const char* backend;  
+}; 
+
+struct task_t {
+    enum status status;
+    struct handler_t handler; 
 };
 
 #endif 

@@ -29,7 +29,7 @@ void Memory::operator delete(void* address, std::size_t) noexcept {
   
 Memory::Memory(std::size_t nbytes, Environment const& environment)
 :   environment_(environment)
-,   references_(1) 
+,   references_(0) 
 {
     auto const& allocator = std::visit( 
         [](auto const& domain) -> Allocator const& { return domain.allocator(); }, 
@@ -45,7 +45,7 @@ Memory::Memory(std::size_t nbytes, Environment const& environment)
         },
         .buffer = {
             .size    = nbytes,
-            .address = allocator.allocate(nbytes)
+            .address = nullptr
         }
     };
 }
@@ -62,13 +62,18 @@ auto Memory::allocate(std::size_t nbytes, Environment const& environment) -> Mem
     return new Memory(nbytes, environment);
 }
 
-void Memory::acquire() {
+void Memory::acquire() { 
+    if(!body_.buffer.address) {
+        body_.buffer.address = body_.allocator.allocate(body_.buffer.size);
+    }
     ++references_; 
 }
 
 void Memory::release() { 
     assert(references_ > 0 && "Assertion error: releasing empty resource");
-    if (--references_ == 0) { 
+    if (--references_ == 0) {  
+        body_.allocator.deallocate(body_.buffer.address, body_.buffer.size);
+        body_.buffer.address = nullptr;
         delete this;
     }
 }

@@ -9,13 +9,14 @@
 #include <blazar/layouts.hpp>
 #include <blazar/graph.hpp> 
 #include <blazar/execution.hpp> 
+#include <blazar/handlers.hpp>
 
 namespace blazar::expressions {
     
 using layouts::index_type;
-using layouts::range_type;
+using layouts::range_type; 
 using execution::Item;
-using execution::Plan;
+using execution::Items;
 
 template<class Expression>
 class Trait {
@@ -53,31 +54,33 @@ public:
     }
 
     template<typename Self>
-    auto forward(this Self&& self, Graph& graph) -> Vertex const& {
+    auto forward(this Self&& self, Vertices& vertices) -> Vertex const& {
         if(!self.vertex_) { 
             self.vertex_ = Vertex(self.symbol, self.type(), self.layout());
-            self.index_  = Index(++graph.size);  
+            self.index_  = Index(vertices.count++);  
             template for (auto const& source : self.sources) {    
-                self.vertex_.link(source.forward(graph));
+                self.vertex_.link(source.forward(vertices));
             }   
         }
         return self.vertex_;
-    }
+    } 
 
     template<typename Self>
-    auto forward(this Self&& self, Plan& plan) -> Item { 
-        if (plan.visited(self)) {
-            std::cout << "RETURN ITEM FROM PLAN" << std::endl;
+    auto forward(this Self&& self, Items& items) -> Item {   
+        if (items.has(self.index_)) {
+            return items.get(self.index_);
         } 
         
         else {
-            plan.visit(self);
-            std::cout << "CREATE TASK" << std::endl;
-            std::cout << "CREATE ITEM" << std::endl;
-            std::cout << "RETURN ITEM" << std::endl;
-        }
-        
-        return Item();
+            return std::apply([&](auto && ... sources) -> Item {
+                return items.build(
+                    self.symbol,
+                    self.index_, 
+                    self.vertex_, 
+                    std::forward<decltype(sources)>(sources).forward(items)...
+                );
+            }, self.sources);
+        } 
     }
  
     auto index() const -> Index {
@@ -86,7 +89,7 @@ public:
 
     auto vertex() const -> Vertex const& {
         return vertex_;
-    }
+    }  
 
 private:
     mutable Index index_;

@@ -2,13 +2,14 @@
 #define GRAPHS_HPP
 
 #include <concepts>
+#include <blazar/types.hpp>
+#include <blazar/layouts.hpp>
 
 namespace blazar {
 
 class Node;
-class Type; 
-class Layout;
 class Symbol; 
+class Storage; 
 
 template<class Expression>
 concept Composable = requires(Expression const& expression) {
@@ -54,11 +55,11 @@ public:
 
     operator bool() const noexcept;
 
-    Vertex(Symbol const& symbol, Type const& type, Layout const& layout);
- 
+    Vertex(Symbol const& symbol, Type const& type, Layout const& layout); 
+    Vertex(Symbol const& symbol, Type const& type, Layout const& layout, Storage const& storage); 
     void move(Vertex& other) noexcept;
     void copy(Vertex const& other); 
-    void link(Vertex const& other);
+    void link(Vertex const& other); 
     void release();
     void prune();
 
@@ -66,20 +67,9 @@ private:
     Node* node_ = nullptr;
 };   
 
-class Graph {
+class Vertices {
 public:
-    std::size_t size = 0;
-
-    Graph(Composable auto const& expression) {
-        head_ = expression.forward(*this);
-    }
-
-    auto head() const noexcept -> Vertex const& {
-        return head_;
-    }
-
-private: 
-    Vertex head_;
+    std::size_t count = 0;  
 };
 
 }

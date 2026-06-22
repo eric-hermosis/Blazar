@@ -1,58 +1,57 @@
 #include <stack>
 #include <blazar/execution.hpp>
 #include <blazar/storage.hpp> 
+#include <blazar/trace.hpp>
 
-namespace blazar::execution { 
-  
-Visitor::Visitor(std::size_t size) {
-    resize(size);
+namespace blazar::execution {  
+
+Item::Item(Task* task) {
+    task_ = task; 
+}
+ 
+auto Item::get() const -> Task* {
+    return task_;
 }
 
-void Visitor::resize(std::size_t size) {
-    bits_.resize((size + 63) / 64, 0);
-}
-
-void Visitor::visit(std::size_t index) {
-    std::size_t word = index / 64;
-    std::size_t bit  = index % 64;
-    bits_.at(word) |= (std::uint64_t(1) << bit);
-}
-
-bool Visitor::visited(std::size_t index) const {
-    std::size_t word = index / 64;
-    std::size_t bit  = index % 64;
-    return bits_.at(word) & (std::uint64_t(1) << bit);
-}
-
-void Visitor::reset() {
-    std::fill(bits_.begin(), bits_.end(), 0);
-}
-
-std::size_t Visitor::size() const {
-    return bits_.size();
+void Item::succeed(Item const& other) {
+    if (task_ && other.task_) {
+        task_-> link(other.task_);
+    }
 } 
 
 static thread_local struct {
-    std::stack<std::unique_ptr<Visitor>> free;
+    std::stack<std::unique_ptr<Tasks>> free;
 } pool;
- 
-Plan::Plan(std::size_t size) {
+
+Items::Items(std::size_t count) { 
     if (pool.free.empty()) {
-        visitor_ = std::make_unique<Visitor>(size);
+        tasks_ = std::make_unique<Tasks>(count); 
     } 
     
-    else {
-        visitor_ = std::move(pool.free.top());
-        visitor_->resize(size);
-        visitor_->reset();
+    else { 
+        tasks_ = std::move(pool.free.top());
+        tasks_-> resize(count);  
         pool.free.pop();
     }
 }
 
-Plan::~Plan() {
-    if (visitor_) {
-        pool.free.push(std::move(visitor_));
+Items::~Items() {
+    if (tasks_) {
+        tasks_->clear();
+        pool.free.push(std::move(tasks_));
     }
+};  
+
+bool Items::has(Index index) {
+    return tasks_->has(index);
+}
+
+auto Items::get(Index index) -> Item {
+    return Item(tasks_->get(index));
+}
+
+auto Items::create(Index index) -> Item {
+    return Item(tasks_->allocate(index));
 }
 
 }
