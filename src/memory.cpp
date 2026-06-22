@@ -5,32 +5,11 @@
 #include <blazar/core/memory.h> 
 #include <blazar/memory.hpp>
 
-namespace blazar { 
-   
-static struct {
-    struct slot_t { alignas(Memory) std::byte bytes[sizeof(Memory)]; };
-    std::stack<slot_t> arena;
-    std::stack<void*, std::vector<void*>> free;
-} pool;  
+namespace blazar {    
 
-auto Memory::operator new(std::size_t) -> void* {
-    if (pool.free.empty()) {
-        pool.arena.emplace();
-        pool.free.push(&pool.arena.top());
-    }
-    void* address = pool.free.top();
-    pool.free.pop();
-    return address;
-}
- 
-void Memory::operator delete(void* address, std::size_t) noexcept {
-    pool.free.push(address);
-}
-  
-Memory::Memory(std::size_t nbytes, Environment const& environment)
-:   environment_(environment)
-,   references_(0) 
-{
+void Memory::set(std::size_t nbytes, Environment const& environment) {
+    environment_ = environment;
+    
     auto const& allocator = std::visit( 
         [](auto const& domain) -> Allocator const& { return domain.allocator(); }, 
         environment
@@ -47,34 +26,48 @@ Memory::Memory(std::size_t nbytes, Environment const& environment)
             .size    = nbytes,
             .address = nullptr
         }
-    };
-}
+    }; 
+} 
 
-Memory::~Memory() {
-    if (body_.buffer.address) {
-        body_.allocator.deallocate(body_.buffer.address, body_.buffer.size);
-        body_.buffer.address = nullptr;
-        body_.buffer.size = 0;
+static thread_local struct {
+    std::stack<Memory> stack;
+    std::stack<Memory*, std::vector<Memory*>> free; 
+} pool; 
+ 
+auto Memory::create(std::size_t nbytes, Environment const& environment) -> Memory* {
+    if (pool.free.empty()) {
+        pool.stack.emplace();
+        pool.free.push(&pool.stack.top());
     }
-}
+    auto memory = pool.free.top();
+    memory->set(nbytes, environment);
+    memory->acquire();
+    pool.free.pop();
+    return memory; 
+} 
 
-auto Memory::allocate(std::size_t nbytes, Environment const& environment) -> Memory* {
-    return new Memory(nbytes, environment);
-}
-
-void Memory::acquire() { 
-    if(!body_.buffer.address) {
+void Memory::allocate() {
+    if (!body_.buffer.address) {
         body_.buffer.address = body_.allocator.allocate(body_.buffer.size);
     }
-    ++references_; 
+}
+
+void Memory::deallocate() {
+    if (body_.buffer.address) {
+        body_.allocator.deallocate(body_.buffer.address, body_.buffer.size);
+        body_.buffer.address = nullptr;   
+    }
+}
+
+void Memory::acquire() {
+    ++references_;
 }
 
 void Memory::release() { 
     assert(references_ > 0 && "Assertion error: releasing empty resource");
     if (--references_ == 0) {  
-        body_.allocator.deallocate(body_.buffer.address, body_.buffer.size);
-        body_.buffer.address = nullptr;
-        delete this;
+        deallocate();
+        pool.free.push(this);
     }
 }
 

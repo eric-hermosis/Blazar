@@ -51,7 +51,7 @@ auto Items::get(Index index) -> Item {
 }
 
 auto Items::create(Index index) -> Item {
-    return Item(tasks_->allocate(index));
+    return Item(tasks_->create(index));
 }
 
 }

@@ -41,14 +41,14 @@ void Node::set(Storage const& storage) {
 }
 
 static thread_local struct {
-    std::stack<Node> arena;
+    std::stack<Node> stack;
     std::stack<Node*, std::vector<Node*>> free; 
 } nodes;
 
-auto Node::allocate(Symbol const& symbol, Type const& type, Layout const& layout) -> Node* { 
+auto Node::create(Symbol const& symbol, Type const& type, Layout const& layout) -> Node* { 
     if (nodes.free.empty()) {
-        nodes.arena.emplace();
-        nodes.free.push(&nodes.arena.top());
+        nodes.stack.emplace();
+        nodes.free.push(&nodes.stack.top());
     }
     auto node = nodes.free.top();
     node->acquire();
@@ -110,7 +110,7 @@ void Task::prune() {
 }
 
 static thread_local struct {
-    std::stack<Task> arena;
+    std::stack<Task> stack;
     std::stack<Task*, std::vector<Task*>> free; 
 } tasks;
 
@@ -119,11 +119,11 @@ Tasks::Tasks(std::size_t count) {
     std::fill(checklist_.begin(), checklist_.end(), nullptr); 
 } 
 
-auto Tasks::allocate(std::size_t index) -> Task* { 
+auto Tasks::create(std::size_t index) -> Task* { 
     assert(checklist_[index] == nullptr);
     if (tasks.free.empty()) {
-        tasks.arena.emplace();
-        tasks.free.push(&tasks.arena.top());
+        tasks.stack.emplace();
+        tasks.free.push(&tasks.stack.top());
     }
     auto task = tasks.free.top(); 
     checklist_[index] = task;

@@ -6,11 +6,11 @@
 namespace blazar {
 
 Vertex::Vertex(Symbol const& symbol, Type const& type, Layout const& layout) {
-    node_ = Node::allocate(symbol, type, layout);
+    node_ = Node::create(symbol, type, layout);
 } 
 
 Vertex::Vertex(Symbol const& symbol, Type const& type, Layout const& layout, Storage const& storage) {
-    node_ = Node::allocate(symbol, type, layout);
+    node_ = Node::create(symbol, type, layout);
     node_->set(storage);
 } 
 

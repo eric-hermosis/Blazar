@@ -6,8 +6,8 @@
 namespace blazar {
 
 Storage::Storage(std::size_t size, Environment const& environment) {
-    memory_ = Memory::allocate(size, environment);
-    memory_-> acquire();
+    memory_ = Memory::create(size, environment);
+    memory_-> allocate();
 }
  
 void Storage::release() { 

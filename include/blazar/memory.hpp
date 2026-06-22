@@ -13,8 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// 
-
+//  
 #ifndef MEMORY_HPP_0x45524943 
 #define MEMORY_HPP_0x45524943 
 
@@ -27,26 +26,19 @@
 namespace blazar {
 
 class Memory {      
-public:  
-    Memory(std::size_t, Environment const&);
-    ~Memory();   
-    Memory(Memory const&) = delete;
-    Memory(Memory &&) = delete; 
-    auto operator=(Memory const&) -> Memory& = delete;
-    auto operator=(Memory &&) -> Memory& = delete;
-    auto operator new(std::size_t) -> void*;
-    void operator delete(void*, std::size_t) noexcept;  
-    
+public:      
     [[nodiscard]] auto size() const noexcept -> std::size_t;
     [[nodiscard]] auto environment() const noexcept -> Environment const&; 
-    [[nodiscard]] auto references() const noexcept -> std::uint32_t;
-    [[nodiscard]] static auto allocate(std::size_t, Environment const&) -> Memory*;  
-
+    [[nodiscard]] auto references() const noexcept -> std::uint32_t;  
+    [[nodiscard]] static auto create(std::size_t, Environment const&) -> Memory*;   
+    void set(std::size_t, Environment const&);
+    void allocate();
+    void deallocate();
     void acquire();
     void release();  
  
 private:
-    std::uint32_t references_;
+    std::uint32_t references_ = 0;
     Environment environment_;  
     memory_t body_; 
 };
